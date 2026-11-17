@@ -1,0 +1,1332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IMS Gandhinagar Geometry Handbook</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: navy masthead band → sticky study toolbar → left chapter rail + reading column; tools sit inline beside the theory they exercise */
+:root{
+  --bg:#f1f4f8; --surface:#ffffff; --ink:#0b1d3a; --muted:#53627b; --line:#d6dee9;
+  --navy:#0b1d3a; --band:#0b1d3a; --band-fg:#eef4fb; --band-muted:#9fb3cc;
+  --teal:#008f92; --teal-soft:#e2f4f4; --teal-line:#a9dcdc;
+  --amber:#b97700; --amber-soft:#fff3d9; --amber-line:#f0d08a;
+  --red:#c2382e; --red-soft:#fde9e6; --red-line:#f1b6ae;
+  --good:#1f8a4c; --bad:#c2382e;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#09111f; --surface:#101b30; --ink:#e4ebf5; --muted:#93a3bb; --line:#22324d;
+  --navy:#cfe0f5; --band:#050b16; --band-fg:#eef4fb; --band-muted:#8fa3bd;
+  --teal:#35d0cb; --teal-soft:#0e2a31; --teal-line:#1d5157;
+  --amber:#f2b440; --amber-soft:#2a2111; --amber-line:#5c4718;
+  --red:#f27c70; --red-soft:#311718; --red-line:#663029;
+  --good:#4fd08a; --bad:#f27c70; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#09111f; --surface:#101b30; --ink:#e4ebf5; --muted:#93a3bb; --line:#22324d;
+  --navy:#cfe0f5; --band:#050b16; --band-fg:#eef4fb; --band-muted:#8fa3bd;
+  --teal:#35d0cb; --teal-soft:#0e2a31; --teal-line:#1d5157;
+  --amber:#f2b440; --amber-soft:#2a2111; --amber-line:#5c4718;
+  --red:#f27c70; --red-soft:#311718; --red-line:#663029;
+  --good:#4fd08a; --bad:#f27c70; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{transition:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.inner{max-width:1180px;margin:0 auto}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* masthead */
+.mast{background:var(--band);color:var(--band-fg);padding-block:36px 30px}
+.mast .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--band-muted)}
+.mast h1{font-family:var(--f-display);font-weight:800;font-size:clamp(38px,7vw,68px);line-height:1;margin:10px 0 12px;letter-spacing:-.02em;text-wrap:balance}
+.mast h1 .ang{color:#35d0cb}
+.mast p{margin:0;max-width:62ch;color:var(--band-muted)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:20px;font-size:14px}
+.legend span{display:inline-flex;align-items:center;gap:8px;color:var(--band-fg)}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.notation{margin-top:14px;font-size:13.5px;color:var(--band-muted);max-width:80ch}
+
+/* toolbar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .inner{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding-block:10px}
+.search{flex:1 1 220px;min-width:0;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:0 10px}
+.search input{border:0;background:transparent;padding:9px 0;width:100%;outline:none}
+.search svg{flex:none;stroke:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.prog{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-family:var(--f-mono)}
+.prog .track{width:90px;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.prog .fill{height:100%;background:var(--teal);width:0;transition:width .3s}
+.mnav{display:none;width:100%;overflow-x:auto;gap:6px;padding-bottom:2px}
+.mnav a{flex:none;font-size:13px;text-decoration:none;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:4px 10px;white-space:nowrap}
+
+/* body grid */
+.main{display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px;padding-block:28px 80px}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);align-self:start}
+.rail ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rail a{display:grid;grid-template-columns:26px 1fr auto;gap:6px;align-items:baseline;padding:7px 8px;border-radius:6px;text-decoration:none;color:var(--muted);font-size:14.5px}
+.rail a:hover{background:var(--surface);color:var(--ink)}
+.rail a.on{background:var(--surface);color:var(--ink);font-weight:700}
+.rail .n{font-family:var(--f-mono);font-size:12px;color:var(--teal)}
+.rail .c{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);font-weight:400}
+.rail .hint{font-size:12.5px;color:var(--muted);margin:14px 8px 0;line-height:1.45}
+@media (max-width:900px){
+  .main{grid-template-columns:minmax(0,1fr)}
+  .rail{display:none}
+  .mnav{display:flex}
+  .prog .track{width:60px}
+}
+
+/* chapters */
+.chap{scroll-margin-top:110px}
+.chap + .chap{margin-top:56px}
+.chap-h{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:18px}
+.chap-h .num{font-family:var(--f-display);font-weight:800;font-size:44px;line-height:1;color:var(--teal)}
+.chap-h h2{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,4vw,34px);line-height:1.1;margin:0;letter-spacing:-.01em}
+.sub{scroll-margin-top:110px;display:grid;gap:14px;min-width:0}
+.sub + .sub{margin-top:30px}
+.sub > h3{font-family:var(--f-display);font-weight:700;font-size:20px;margin:0;display:flex;gap:10px;align-items:baseline}
+.sub > h3 .sn{font-family:var(--f-mono);font-size:13px;font-weight:600;color:var(--muted)}
+.sub ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.sub p{margin:0}
+.muted{color:var(--muted)}
+
+/* boxes */
+.box{border:1px solid var(--line);border-radius:8px;padding:12px 16px 14px;background:var(--surface);min-width:0;overflow-x:auto}
+.box .tag{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.box .tag span{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.box.f{background:var(--teal-soft);border-color:var(--teal-line)} .box.f .tag span{color:var(--teal)}
+.box.t{background:var(--amber-soft);border-color:var(--amber-line)} .box.t .tag span{color:var(--amber)}
+.box.x{background:var(--red-soft);border-color:var(--red-line)} .box.x .tag span{color:var(--red)}
+.box.done{opacity:.78}
+.memo{flex:none;border:1px solid currentColor;background:transparent;border-radius:999px;font-size:12px;padding:2px 10px;cursor:pointer;color:var(--muted)}
+.memo[aria-pressed="true"]{background:var(--good);border-color:var(--good);color:#fff}
+.box p + p{margin-top:6px}
+mjx-container[display="true"]{margin:.5em 0!important;overflow-x:auto;overflow-y:hidden;max-width:100%}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+td.c,th.c{text-align:center}
+.triples{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.triples b{font-family:var(--f-mono);font-weight:400;font-size:13.5px;background:var(--surface);border:1px solid var(--teal-line);border-radius:5px;padding:2px 8px}
+
+/* tools */
+.tool{border:1.5px dashed var(--teal);border-radius:10px;padding:14px 16px 16px;display:grid;gap:12px;min-width:0}
+.tool-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tool-h b{font-family:var(--f-display);font-size:17px}
+.tool-h .pill{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--teal);color:var(--bg);padding:2px 8px;border-radius:999px}
+.fields{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end}
+.fields label{display:grid;gap:3px;font-size:13px;color:var(--muted)}
+.fields input,.fields select{width:96px;padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-family:var(--f-mono);font-size:14.5px}
+.fields select{width:auto;font-family:var(--f-body)}
+.fields input[type=range]{width:180px;padding:0}
+.toggles{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
+.toggles label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.tool-out{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:640px){.tool-out{grid-template-columns:minmax(0,1fr)}}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14.5px;margin:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:14px;overflow-wrap:anywhere}
+.verdict{font-weight:700}
+.err{color:var(--bad);font-size:14.5px}
+.fig{width:100%;max-width:100%;height:auto;display:block;background:var(--bg);border-radius:8px}
+.fig text{font-family:var(--f-mono);font-size:13px;fill:var(--ink)}
+.figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.figs figure{margin:0;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:10px 10px 8px;display:grid;gap:6px;min-width:0}
+.figs figcaption{font-size:13.5px;color:var(--muted);line-height:1.4}
+.dg{width:100%;max-width:100%;height:auto;display:block}
+.dg text{font-family:var(--f-mono);font-size:12px;fill:var(--ink)}
+.dg .ln{stroke:var(--ink);stroke-width:1.5;fill:none}
+.dg .cr{stroke:var(--ink);stroke-width:1.5;fill:none}
+.dg .tl{stroke:var(--teal);stroke-width:2;fill:none}
+.dg .am{stroke:var(--amber);stroke-width:2;fill:none}
+.dg .wt{fill:var(--teal);fill-opacity:.35;stroke:var(--teal);stroke-width:1}
+.dg .wa{fill:var(--amber);fill-opacity:.4;stroke:var(--amber);stroke-width:1}
+.dg .dot{fill:var(--ink)}
+.dg .tt{fill:var(--teal);font-weight:600}
+.dg .ta{fill:var(--amber);font-weight:600}
+.figs figure.wide{grid-column:1/-1;max-width:340px}
+.dg .mp{fill:var(--amber-soft);stroke:var(--amber);stroke-width:2}
+.dg .mp2{fill:var(--amber);stroke:var(--amber);stroke-width:2}
+.dg .mpt{font-weight:700;font-size:12px;fill:var(--ink)}
+.dg .mp2+.mpt{fill:var(--bg)}
+.fig .mp{fill:var(--amber-soft);stroke:var(--amber);stroke-width:2}
+.fig .mpt{font-weight:700;fill:var(--ink);font-size:12px}
+.fig .tt{fill:var(--teal);font-weight:600}.fig .ta{fill:var(--amber);font-weight:600}
+.fig .cv1{stroke:var(--teal);stroke-width:2.5}.fig .cv2{stroke:var(--amber);stroke-width:2.5}
+.figs figcaption b{color:var(--ink)}
+.dg .gr{stroke:var(--line);stroke-width:.7}
+.dg .gr2{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+.dg .ax{stroke:var(--muted);stroke-width:1.3}
+.dg .sm{font-size:10px;fill:var(--muted)}
+.dg .dot2{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
+.dg .pkb{fill:var(--amber)}.dg .pki{fill:var(--teal)}
+.fig .gr{stroke:var(--line);stroke-width:.7}.fig .ax{stroke:var(--muted);stroke-width:1.3}
+.fig .dot{fill:var(--ink)}.fig .dot2{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
+.fig .lnA{stroke:var(--teal);stroke-width:2}.fig .pr{stroke:var(--amber);stroke-width:2}.fig .pr2{stroke:var(--amber);stroke-width:1.5;stroke-dasharray:4 3}
+.fig .sm{font-size:10px;fill:var(--muted)}
+.chap-h .cc{margin-left:auto;font-family:var(--f-mono);font-size:12.5px;color:var(--muted);white-space:nowrap;align-self:center}
+.chap-h .cc b{color:var(--teal);font-weight:600}
+.mnav .mc{font-family:var(--f-mono);font-size:11.5px;color:var(--teal);margin-left:4px}
+.chap-h{flex-wrap:wrap}
+.sol{border-top:1px dashed var(--line);padding-top:8px;font-size:14.5px;color:var(--ink)}
+.sol b{color:var(--teal)}
+.q .lvl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-left:6px}
+.s-main{fill:var(--teal-soft);stroke:var(--teal);stroke-width:2}
+.s-in{fill:none;stroke:var(--amber);stroke-width:1.8}
+.s-out{fill:none;stroke:var(--red);stroke-width:1.5;stroke-dasharray:5 4}
+.s-med{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:3 3}
+.s-diag{stroke:var(--teal);stroke-opacity:.35;stroke-width:1}
+.s-dot{fill:var(--ink)}
+.s-axis{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 4}
+.stack{display:flex;height:22px;border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.stack div{height:100%;transition:width .25s}
+.list-tri{font-family:var(--f-mono);font-size:13px;color:var(--muted);line-height:1.7;max-height:120px;overflow:auto;overflow-wrap:anywhere}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.card{position:relative;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:12px 14px;cursor:pointer;min-height:118px;display:grid;align-content:start;gap:6px}
+.card .k{font-family:var(--f-mono);font-size:12px;color:var(--teal)}
+.card .fr{font-weight:700;line-height:1.35}
+.card .bk{display:none;font-size:14.5px;border-top:1px dashed var(--line);padding-top:6px}
+.card[aria-expanded="true"]{border-color:var(--teal-line);background:var(--teal-soft)}
+.card[aria-expanded="true"] .bk{display:block}
+.card .tap{font-size:12px;color:var(--muted)}
+.card[aria-expanded="true"] .tap{display:none}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:7px 14px;cursor:pointer;font-size:14px}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:var(--bg);font-weight:700}
+
+/* quiz */
+.quiz{display:grid;gap:10px}
+.q{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:12px 14px;display:grid;gap:8px}
+.q p{margin:0}
+.qn{font-family:var(--f-mono);font-weight:600;color:var(--teal);margin-right:8px}
+.qa{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.qa input{width:140px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-family:var(--f-mono)}
+.q.ok{border-color:var(--good)} .q.no{border-color:var(--bad)}
+.res{font-size:14px;font-weight:700}
+.res.ok{color:var(--good)} .res.no{color:var(--bad)}
+.reveal{border:0;background:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:13.5px;padding:0}
+
+.scorebar{position:fixed;left:0;right:0;bottom:0;z-index:11;background:var(--band);color:var(--band-fg);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -4px 18px rgba(0,0,0,.18)}
+.scorebar .inner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding-block:10px}
+.scorebar .sc{font-family:var(--f-mono);font-size:15px}
+.scorebar .sc b{font-size:20px;color:#35d0cb}
+.scorebar input{flex:1 1 140px;min-width:0;max-width:240px;padding:7px 10px;border-radius:6px;border:1px solid #2a3c5c;background:#0f2140;color:#eef4fb}
+.wa{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#06240f;font-weight:700;text-decoration:none;border-radius:6px;padding:8px 14px;font-size:14px}
+.scorebar .x{margin-left:auto;background:none;border:0;color:#9fb3cc;cursor:pointer;font-size:13px}
+
+.empty{padding:30px 0;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-block:20px 90px;font-size:13px;color:var(--muted)}
+footer .inner{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+</style>
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+
+<header class="mast gut">
+  <div class="inner">
+    <div class="eyebrow">IMS Gandhinagar · CAT / IPMAT · Quantitative Aptitude</div>
+    <h1>Geometry <span class="ang">Handbook</span></h1>
+    <p>Concepts, formulae, theorems, shortcuts and topper tricks in one place, with calculators you can play with, rapid-fire flashcards, a 20-question self-test and a 10-question CAT / IPMAT-level challenge set.</p>
+    <div class="legend">
+      <span><i style="background:#35d0cb"></i>Formula: memorise</span>
+      <span><i style="background:#f2b440"></i>Topper trick: the exam shortcut</span>
+      <span><i style="background:#f27c70"></i>Exam trap: where marks are lost</span>
+      <span><i style="border:1.5px dashed #35d0cb"></i>Try it: live calculator</span>
+    </div>
+    <div class="notation">Angles in degrees unless radians are stated. In a triangle, \(a,b,c\) are the sides opposite \(A,B,C\); \(s=\frac{a+b+c}{2}\) is the semi-perimeter, \(\Delta\) the area, \(R\) the circumradius and \(r\) the inradius.</div>
+  </div>
+</header>
+
+<div class="bar gut">
+  <div class="inner">
+    <label class="search" for="q">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search: median, Ptolemy, cone, tangent…" autocomplete="off">
+    </label>
+    <div class="chips" role="group" aria-label="Show">
+      <button class="chip" data-f="all" aria-pressed="true">All</button>
+      <button class="chip" data-f="f" aria-pressed="false">Formulae</button>
+      <button class="chip" data-f="t" aria-pressed="false">Tricks</button>
+      <button class="chip" data-f="x" aria-pressed="false">Traps</button>
+    </div>
+    <div class="prog" title="Boxes marked as memorised"><div class="track"><div class="fill" id="pfill"></div></div><span id="ptext">0/0</span></div>
+    <nav class="mnav" aria-label="Chapters">
+      <a href="#ch1">1 Lines &amp; Triangles <span class="mc" data-c="ch1"></span></a><a href="#ch2">2 Trigonometry <span class="mc" data-c="ch2"></span></a><a href="#ch3">3 Quadrilaterals <span class="mc" data-c="ch3"></span></a><a href="#ch4">4 Circles <span class="mc" data-c="ch4"></span></a><a href="#ch5">5 Mensuration <span class="mc" data-c="ch5"></span></a><a href="#ch6">6 Coordinate <span class="mc" data-c="ch6"></span></a><a href="#rapid">Rapid-fire</a><a href="#test">Self-test</a>
+    </nav>
+  </div>
+</div>
+
+<div class="gut"><div class="inner main">
+<aside class="rail" aria-label="Chapters">
+  <ol id="rail">
+    <li><a href="#ch1"><span class="n">01</span>Lines &amp; Triangles<span class="c" data-c="ch1"></span></a></li>
+    <li><a href="#ch2"><span class="n">02</span>Trigonometry<span class="c" data-c="ch2"></span></a></li>
+    <li><a href="#ch3"><span class="n">03</span>Quadrilaterals &amp; Polygons<span class="c" data-c="ch3"></span></a></li>
+    <li><a href="#ch4"><span class="n">04</span>Circles<span class="c" data-c="ch4"></span></a></li>
+    <li><a href="#ch5"><span class="n">05</span>3D &amp; Mensuration<span class="c" data-c="ch5"></span></a></li>
+    <li><a href="#ch6"><span class="n">06</span>Coordinate Geometry<span class="c" data-c="ch6"></span></a></li>
+    <li><a href="#rapid"><span class="n">24</span>Rapid-fire revision<span class="c"></span></a></li>
+    <li><a href="#test"><span class="n">Q</span>Self-test<span class="c" id="railScore"></span></a></li>
+  </ol>
+  <p class="hint">Tap <b>Memorised</b> on any box once you can write it from memory. Progress stays on this device.</p>
+</aside>
+
+<main id="content">
+<p class="empty" id="nomatch" hidden>Nothing matches that search. Try a shorter word, such as “tangent” or “area”.</p>
+
+<!-- ================= 1. TRIANGLES ================= -->
+<section class="chap" id="ch1">
+  <div class="chap-h"><span class="num">1</span><h2>Lines, Angles &amp; Triangles</h2><span class="cc" title="Boxes memorised in this chapter"><b data-c="ch1"></b> memorised</span></div>
+
+  <div class="sub" id="s1-0">
+    <h3><span class="sn">1.1</span>Lines &amp; angles</h3>
+    <ul>
+      <li>Angle types: acute \((\lt90^\circ)\), right \((90^\circ)\), obtuse \((90^\circ\text{ to }180^\circ)\), straight \((180^\circ)\), reflex \((180^\circ\text{ to }360^\circ)\).</li>
+      <li>Complementary angles add to \(90^\circ\); supplementary angles add to \(180^\circ\).</li>
+      <li>Angles on a straight line (a linear pair) add to \(180^\circ\). Vertically opposite angles are equal. Angles round a point add to \(360^\circ\).</li>
+    </ul>
+    <div class="box f"><div class="tag"><span>Formula · Two parallel lines cut by a transversal</span></div>
+      <p>Corresponding angles are equal. Alternate interior angles are equal. Alternate exterior angles are equal.</p>
+      <p>Co-interior angles (same side of the transversal, between the lines) add to \(180^\circ\).</p>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-1">
+    <h3><span class="sn">1.2</span>Angle &amp; side fundamentals</h3>
+    <ul>
+      <li>Sum of interior angles \(=180^\circ\). Sum of exterior angles \(=360^\circ\).</li>
+      <li>Exterior angle \(=\) sum of the two remote interior angles.</li>
+      <li>Triangle inequality: each side is less than the sum and more than the difference of the other two: \(|b-c|\lt a\lt b+c\).</li>
+      <li>Side–angle correspondence: the largest side lies opposite the largest angle (and vice versa). Equal sides \(\Leftrightarrow\) equal opposite angles.</li>
+      <li>Every side is shorter than the semi-perimeter \(s\).</li>
+      <li>Type from the sides, with \(c\) the longest: \(c^2\lt a^2+b^2\) acute, \(c^2=a^2+b^2\) right, \(c^2\gt a^2+b^2\) obtuse.</li>
+      <li>Isosceles triangle: the altitude from the apex is also the median, the angle bisector and the perpendicular bisector of the base.</li>
+    </ul>
+    <div class="box t"><div class="tag"><span>Topper trick · Counting the third side</span></div>
+      <p>With two sides \(p\ge q\) fixed, an integer third side \(x\) satisfies \(p-q\lt x\lt p+q\), which gives \(2q-1\) values.</p>
+      <p>For obtuse triangles, count both cases: \(x\) the longest with \(x^2\gt p^2+q^2\), or \(p\) the longest with \(x^2\lt p^2-q^2\). Sides 8 and 15 give \(18\le x\le22\) and \(8\le x\le12\): 10 triangles.</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Integer-sided triangles of perimeter n</span></div>
+      <p>Number of triangles = nearest integer to \(\dfrac{n^2}{48}\) if \(n\) is even, or to \(\dfrac{(n+3)^2}{48}\) if \(n\) is odd.</p>
+    </div>
+    <div class="tool" id="tool-int">
+      <div class="tool-h"><span class="pill">Try it</span><b>Count the triangles</b></div>
+      <div class="fields"><label for="int-n">Perimeter n<input id="int-n" type="number" min="3" max="400" value="24"></label></div>
+      <div id="int-out"></div>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-2">
+    <h3><span class="sn">1.3</span>Area, all the ways</h3>
+    <div class="box f"><div class="tag"><span>Formula · Area of a triangle</span></div>
+      \[\Delta=\tfrac12(\text{base})(\text{height})=\tfrac12 ab\sin C=\sqrt{s(s-a)(s-b)(s-c)}\ \ (\text{Heron})\]
+      \[\Delta=\frac{abc}{4R}=rs=\tfrac12\left|x_1(y_2-y_3)+x_2(y_3-y_1)+x_3(y_1-y_2)\right|\]
+    </div>
+    <ul>
+      <li>From the three medians \(m_1,m_2,m_3\): \(\Delta=\frac43\times\) (area of the triangle whose sides are \(m_1,m_2,m_3\)).</li>
+      <li>Two triangles with a common angle: \(\dfrac{\Delta_1}{\Delta_2}=\dfrac{(\text{product of the two sides around that angle})_1}{(\text{same})_2}\).</li>
+    </ul>
+    <div class="box t"><div class="tag"><span>Topper trick · Area ratios</span></div>
+      <p>Same base \(\Rightarrow\) area ratio = height ratio. Same height \(\Rightarrow\) area ratio = base ratio. This single idea cracks most area-ratio problems. If a cevian splits a side in ratio \(p:q\), it splits the triangle’s area in the same ratio \(p:q\) (equal heights).</p>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-3">
+    <h3><span class="sn">1.4</span>Right-angled triangles</h3>
+    <ul>
+      <li>Pythagoras: \(a^2+b^2=c^2\) (\(c\) = hypotenuse).</li>
+      <li>Altitude to the hypotenuse: \(h=\dfrac{ab}{c}\), and \(\dfrac1{h^2}=\dfrac1{a^2}+\dfrac1{b^2}\).</li>
+      <li>Median to hypotenuse \(=\dfrac c2=R\) (the circumcentre is the mid-point of the hypotenuse).</li>
+      <li>Inradius \(r=\dfrac{a+b-c}{2}=\dfrac{ab}{a+b+c}\).</li>
+    </ul>
+    <div class="box f"><div class="tag"><span>Formula · Right triangle theorem</span></div>
+      <p>In \(\triangle ABC\) with \(\angle B=90^\circ\), draw the altitude \(BD\) to the hypotenuse \(AC\). Then \(\triangle ADB\sim\triangle BDC\sim\triangle ABC\), and with \(AD=p\), \(DC=q\), \(BD=h\):</p>
+      \[BD^2=AD\cdot DC\ \ (h^2=pq)\qquad AB^2=AD\cdot AC\qquad BC^2=DC\cdot AC\]
+      <p class="muted">So \(AB^2:BC^2=p:q\). With \(AD=8\) and \(DC=2\): \(BD=4\), \(AB=\sqrt{80}\), \(BC=\sqrt{20}\).</p>
+    </div>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 210 160" role="img" aria-label="Right triangle with altitude to the hypotenuse"><polygon class="ln" points="30,20 30,140 190,140"/><line class="tl" x1="30" y1="140" x2="87.6" y2="63.2"/><polyline class="ln" points="30,130 40,130 40,140"/><polyline class="ln" points="94.8,68.6 89.4,75.8 82.2,70.4"/><text x="16" y="24">A</text><text x="16" y="146">B</text><text x="194" y="146">C</text><text x="91.6" y="57.2">D</text><text class="ta" x="64.8" y="39.6">p</text><text class="ta" x="142.8" y="97.6">q</text><text class="tt" x="60.8" y="115.6">h</text></svg><figcaption>Altitude BD to the hypotenuse makes three similar right triangles.</figcaption></figure></div>
+    <div class="box f"><div class="tag"><span>Formula · Pythagorean triples worth memorising</span></div>
+      <div class="triples"><b>3, 4, 5</b><b>5, 12, 13</b><b>8, 15, 17</b><b>7, 24, 25</b><b>20, 21, 29</b><b>9, 40, 41</b><b>12, 35, 37</b><b>11, 60, 61</b><b>28, 45, 53</b><b>16, 63, 65</b><b>33, 56, 65</b><b>48, 55, 73</b></div>
+      <p>Generator: for \(m\gt n\), \(\left(m^2-n^2,\ 2mn,\ m^2+n^2\right)\).</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Special-angle triangles</span></div>
+      <div class="tw"><table>
+        <tr><th>Angles</th><th>Sides (opposite, in order)</th></tr>
+        <tr><td>\(30^\circ:60^\circ:90^\circ\)</td><td>\(1:\sqrt3:2\)</td></tr>
+        <tr><td>\(45^\circ:45^\circ:90^\circ\)</td><td>\(1:1:\sqrt2\)</td></tr>
+        <tr><td>\(15^\circ:75^\circ:90^\circ\)</td><td>\((\sqrt3-1):(\sqrt3+1):2\sqrt2\)</td></tr>
+      </table></div>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Square inside a right triangle</span></div>
+      <p>Legs \(a, b\), hypotenuse \(c\), altitude to the hypotenuse \(h\).</p>
+      <p>Square in the right-angle corner (two sides on the legs): side \(=\dfrac{ab}{a+b}\). Square standing on the hypotenuse: side \(=\dfrac{ch}{c+h}\).</p>
+      <p class="muted">Both follow from similar triangles. For 6-8-10: \(\frac{24}{7}\) in the corner, \(\frac{120}{37}\) on the hypotenuse.</p>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-4">
+    <h3><span class="sn">1.5</span>Equilateral triangle (side a)</h3>
+    <div class="box f"><div class="tag"><span>Formula · Everything about the equilateral triangle</span></div>
+      \[\Delta=\frac{\sqrt3}{4}a^2,\quad h=\frac{\sqrt3}{2}a,\quad r=\frac{a}{2\sqrt3}=\frac h3,\quad R=\frac{a}{\sqrt3}=\frac{2h}{3},\quad R=2r\]
+      <p>Centroid, incentre, circumcentre and orthocentre coincide. Incircle area : circumcircle area \(=1:4\).</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Viviani</span></div>
+      <p>For any interior point of an equilateral triangle, the sum of the perpendicular distances to the three sides equals the altitude \(h\), wherever the point is.</p>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-5">
+    <h3><span class="sn">1.6</span>Similarity &amp; congruence</h3>
+    <ul>
+      <li>Similarity: AA, SAS, SSS. Congruence: SSS, SAS, ASA, AAS, RHS.</li>
+      <li>In similar triangles with ratio \(k\), all lengths (sides, medians, altitudes, bisectors, \(r\), \(R\), perimeter) scale by \(k\); areas scale by \(k^2\).</li>
+      <li>BPT (Thales): a line parallel to one side cuts the other two proportionally.</li>
+      <li>Mid-point theorem: the segment joining the mid-points of two sides is parallel to, and half of, the third side.</li>
+    </ul>
+    <div class="box x"><div class="tag"><span>Exam trap · Ratio of areas</span></div>
+      <p>Sides in ratio \(2:3\) does not mean areas in ratio \(2:3\); it is \(4:9\). And two triangles with equal area are not necessarily congruent.</p>
+    </div>
+    <div class="tool" id="tool-k">
+      <div class="tool-h"><span class="pill">Try it</span><b>Scale factor</b></div>
+      <div class="fields"><label for="k-in">Length ratio k<input id="k-in" type="number" step="any" value="1.5"></label></div>
+      <dl class="kv" id="k-out"></dl>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-6">
+    <h3><span class="sn">1.7</span>Cevians: medians, bisectors, altitudes</h3>
+    <div class="box f"><div class="tag"><span>Formula · Apollonius theorem</span></div>
+      <p>If \(AD\) is the median to \(BC\) (\(D\) the mid-point of \(BC\)):</p>
+      \[AB^2+AC^2=2\left(AD^2+BD^2\right)\]
+      <p class="muted">Example: \(AB=6\), \(AC=8\), \(BC=10\) gives \(36+64=2(AD^2+25)\), so \(AD=5\).</p>
+    </div>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 210 160" role="img" aria-label="Triangle with median AD"><polygon class="ln" points="80,22 20,140 190,140"/><line class="tl" x1="80" y1="22" x2="105.0" y2="140"/><line class="am" x1="62.5" y1="135" x2="62.5" y2="145"/><line class="am" x1="147.5" y1="135" x2="147.5" y2="145"/><circle class="dot" cx="105.0" cy="140" r="2.5"/><text x="76" y="16">A</text><text x="8" y="146">B</text><text x="194" y="146">C</text><text x="101.0" y="156">D</text></svg><figcaption>D is the mid-point of BC; AD is the median.</figcaption></figure></div>
+    <div class="box f"><div class="tag"><span>Formula · Median facts</span></div>
+      <p>The three medians meet at the centroid, which divides each median \(2:1\) from the vertex, and they cut the triangle into 6 triangles of equal area.</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Angle-bisector facts</span></div>
+      <p>The internal bisector from \(A\) divides \(BC\) as \(\dfrac{BD}{DC}=\dfrac{AB}{AC}=\dfrac cb\).</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Stewart’s theorem</span></div>
+      <p>Length of any cevian \(AD\), with \(BD=m\), \(DC=n\):</p>
+      \[AB^2\cdot n+AC^2\cdot m=BC\left(AD^2+mn\right)\]
+      <p class="muted">Each side is multiplied by the segment at the far end of \(BC\).</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Exterior angle bisector</span></div>
+      <p>The bisector of the exterior angle at \(A\) meets \(BC\) produced at \(D\) with \(\dfrac{BD}{DC}=\dfrac{AB}{AC}\) (external division).</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Perpendicular medians</span></div>
+      <p>If the medians from \(B\) and \(C\) are perpendicular, then \(b^2+c^2=5a^2\) and \(\Delta=\tfrac23\,m_b\,m_c\).</p>
+      <p class="muted">Medians of 8 and 12 at right angles give an area of 64.</p>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-7">
+    <h3><span class="sn">1.8</span>The four centres</h3>
+    <div class="tw"><table>
+      <tr><th>Centre</th><th>Meeting of</th><th>Position</th><th>Key relations</th></tr>
+      <tr><td><b>Centroid G</b></td><td>medians</td><td>always inside</td><td>divides medians \(2:1\)</td></tr>
+      <tr><td><b>Incentre I</b></td><td>angle bisectors</td><td>always inside</td><td>\(r=\Delta/s\); \(\angle BIC=90^\circ+\frac A2\)</td></tr>
+      <tr><td><b>Circumcentre O</b></td><td>perpendicular bisectors of sides</td><td>acute: inside; right: on hypotenuse; obtuse: outside</td><td>\(R=\frac{abc}{4\Delta}=\frac{a}{2\sin A}\); \(\angle BOC=2A\)</td></tr>
+      <tr><td><b>Orthocentre H</b></td><td>altitudes</td><td>acute: inside; right: at the vertex; obtuse: outside</td><td>\(\angle BHC=180^\circ-A\)</td></tr>
+    </table></div>
+    <div class="box f"><div class="tag"><span>Formula · Euler line &amp; Euler’s inequality</span></div>
+      <p>\(O, G, H\) are collinear with \(OG:GH=1:2\). \(OI^2=R^2-2Rr\) (Euler) \(\Rightarrow R\ge 2r\), with equality only for the equilateral triangle.</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Incircle contact lengths</span></div>
+      <p>Where the incircle touches the sides, the tangent lengths from the vertices are \(s-a,\ s-b,\ s-c\). So if the incircle touches \(BC\) at \(X\), then \(BX=s-b\) and \(CX=s-c\). Deadly for “find the segment” problems.</p>
+      <p>Exradii: \(r_a=\dfrac{\Delta}{s-a}\), and \(\dfrac1r=\dfrac1{r_a}+\dfrac1{r_b}+\dfrac1{r_c}\).</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Bisector angle results</span></div>
+      <p>Internal bisectors of \(B\) and \(C\) meet at \(I\): \(\angle BIC=90^\circ+\frac A2\).</p>
+      <p>Bisectors of the exterior angles at \(B\) and \(C\) meet at the excentre: angle there \(=90^\circ-\frac A2\).</p>
+      <p>Internal bisector of \(B\) and exterior bisector of \(C\) meet at \(E\): \(\angle BEC=\frac A2\).</p>
+    </div>
+    <div class="tool" id="tool-tri">
+      <div class="tool-h"><span class="pill">Try it</span><b>Triangle explorer</b><span class="muted" style="font-size:13.5px">Enter three sides; the figure is drawn to scale.</span></div>
+      <div class="fields">
+        <label for="ta">a (BC)<input id="ta" type="number" step="any" min="0" value="14"></label>
+        <label for="tb">b (CA)<input id="tb" type="number" step="any" min="0" value="15"></label>
+        <label for="tc">c (AB)<input id="tc" type="number" step="any" min="0" value="13"></label>
+        <label for="tpre">Presets<select id="tpre"><option value="">Choose…</option><option value="14,15,13">13-14-15</option><option value="5,4,3">3-4-5 right</option><option value="6,6,6">Equilateral 6</option><option value="10,10,12">Isosceles 10-10-12</option><option value="11,4,9">Obtuse 4-9-11</option></select></label>
+      </div>
+      <div class="toggles">
+        <label><input type="checkbox" id="tg-in" checked> Incircle</label>
+        <label><input type="checkbox" id="tg-out"> Circumcircle</label>
+        <label><input type="checkbox" id="tg-med"> Medians &amp; centroid</label>
+      </div>
+      <div class="tool-out"><svg class="fig" id="tri-svg" viewBox="0 0 360 260" role="img" aria-label="Triangle drawn to scale"></svg><div id="tri-out"></div></div>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-8">
+    <h3><span class="sn">1.9</span>Ceva, Menelaus &amp; mass points</h3>
+    <ul>
+      <li><b>Ceva</b> (cevians \(AD, BE, CF\) concurrent): \(\dfrac{BD}{DC}\cdot\dfrac{CE}{EA}\cdot\dfrac{AF}{FB}=1\).</li>
+      <li><b>Menelaus</b> (points \(D, E, F\) collinear on the sides or a transversal): \(\dfrac{BD}{DC}\cdot\dfrac{CE}{EA}\cdot\dfrac{AF}{FB}=1\) (unsigned).</li>
+    </ul>
+    <div class="box f"><div class="tag"><span>Formula · Mass point geometry: the rules</span></div>
+      <p><b>1. Swap.</b> If \(BD:DC=m:n\), put mass \(n\) at \(B\) and \(m\) at \(C\).</p>
+      <p><b>2. Add.</b> The point on the side carries the sum: \(m_D=m_B+m_C\).</p>
+      <p><b>3. Match.</b> A vertex shared by two cevians must have one mass. Scale a ratio up until it agrees.</p>
+      <p><b>4. Read.</b> Along a cevian, segment ratio = opposite mass ratio: \(AP:PD=m_D:m_A\).</p>
+    </div>
+    <div class="figs"><figure class="wide"><svg class="dg" viewBox="0 0 250 112" role="img" aria-label="See-saw balancing masses 3 and 2 at distances 2 and 3"><text class="ta" x="125" y="16" text-anchor="middle">3 × 2 = 2 × 3</text><line class="ln" x1="30" y1="66" x2="220" y2="66" stroke-width="3"/><circle class="mp" cx="30" cy="47" r="15"/><text class="mpt" x="30" y="51" text-anchor="middle">3</text><circle class="mp" cx="220" cy="51" r="11"/><text class="mpt" x="220" y="55" text-anchor="middle">2</text><polygon class="wt" points="106,68 95,86 117,86"/><line class="ln" x1="15" y1="86" x2="235" y2="86"/><text x="30" y="104" text-anchor="middle">B</text><text x="220" y="104" text-anchor="middle">C</text><text x="106" y="104" text-anchor="middle">D</text><text class="tt" x="68.0" y="104" text-anchor="middle">2</text><text class="tt" x="163.0" y="104" text-anchor="middle">3</text></svg><figcaption><b>The idea.</b> BD : DC = 2 : 3 balances only if B carries 3 and C carries 2. The heavier mass sits nearer the pivot D.</figcaption></figure></div>
+    <p class="muted" style="margin:0">Worked example: \(BD:DC=2:3\), \(E\) is the mid-point of \(AC\), and \(AD\) meets \(BE\) at \(P\).</p>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 220 185" role="img" aria-label="Step 1"><polygon class="ln" points="70,18 18,150 200,150"/><line class="tl" x1="18" y1="150" x2="200" y2="150" stroke-width="3"/><circle class="dot" cx="90.8" cy="150.0" r="3"/><text  x="86.8" y="166.0">D</text><text class="tt" x="50.4" y="144">2</text><text class="tt" x="141.4" y="144">3</text><circle class="mp" cx="18" cy="150" r="9"/><text class="mpt" x="18" y="154" text-anchor="middle">3</text><circle class="mp" cx="200" cy="150" r="9"/><text class="mpt" x="200" y="154" text-anchor="middle">2</text><text  x="46" y="22">A</text><text  x="14" y="180">B</text><text  x="196" y="180">C</text></svg><figcaption><b>Step 1.</b> BD : DC = 2 : 3, so put 3 at B and 2 at C (swap the numbers).</figcaption></figure><figure><svg class="dg" viewBox="0 0 220 185" role="img" aria-label="Step 2"><polygon class="ln" points="70,18 18,150 200,150"/><line class="ln" x1="70" y1="18" x2="90.8" y2="150.0" stroke-dasharray="3 3"/><circle class="mp" cx="18" cy="150" r="9"/><text class="mpt" x="18" y="154" text-anchor="middle">3</text><circle class="mp" cx="200" cy="150" r="9"/><text class="mpt" x="200" y="154" text-anchor="middle">2</text><circle class="mp2" cx="90.8" cy="150.0" r="9"/><text class="mpt" x="90.8" y="154.0" text-anchor="middle">5</text><text  x="86.8" y="180.0">D</text><text  x="46" y="22">A</text><text  x="14" y="180">B</text><text  x="196" y="180">C</text><text class="ta" x="104.8" y="138.0">3 + 2</text></svg><figcaption><b>Step 2.</b> D carries the total: 3 + 2 = 5.</figcaption></figure><figure><svg class="dg" viewBox="0 0 220 185" role="img" aria-label="Step 3"><polygon class="ln" points="70,18 18,150 200,150"/><line class="tl" x1="70" y1="18" x2="200" y2="150" stroke-width="3"/><text class="tt" x="110.5" y="51.0">1</text><text class="tt" x="175.5" y="117.0">1</text><circle class="mp" cx="18" cy="150" r="9"/><text class="mpt" x="18" y="154" text-anchor="middle">3</text><circle class="mp" cx="200" cy="150" r="9"/><text class="mpt" x="200" y="154" text-anchor="middle">2</text><circle class="mp" cx="90.8" cy="150.0" r="9"/><text class="mpt" x="90.8" y="154.0" text-anchor="middle">5</text><circle class="mp2" cx="70" cy="18" r="9"/><text class="mpt" x="70" y="22" text-anchor="middle">2</text><circle class="mp2" cx="135.0" cy="84.0" r="9"/><text class="mpt" x="135.0" y="88.0" text-anchor="middle">4</text><text  x="149.0" y="78.0">E</text><text  x="46" y="22">A</text><text  x="14" y="180">B</text><text  x="196" y="180">C</text></svg><figcaption><b>Step 3.</b> E is the mid-point of AC, so A must equal C: A = 2, and E = 2 + 2 = 4.</figcaption></figure><figure><svg class="dg" viewBox="0 0 220 185" role="img" aria-label="Step 4"><polygon class="ln" points="70,18 18,150 200,150"/><line class="tl" x1="70" y1="18" x2="90.8" y2="150.0" stroke-width="2.5"/><line class="am" x1="18" y1="150" x2="135.0" y2="84.0" stroke-width="2.5"/><circle class="mp" cx="70" cy="18" r="9"/><text class="mpt" x="70" y="22" text-anchor="middle">2</text><circle class="mp" cx="18" cy="150" r="9"/><text class="mpt" x="18" y="154" text-anchor="middle">3</text><circle class="mp" cx="200" cy="150" r="9"/><text class="mpt" x="200" y="154" text-anchor="middle">2</text><circle class="mp" cx="90.8" cy="150.0" r="9"/><text class="mpt" x="90.8" y="154.0" text-anchor="middle">5</text><circle class="mp" cx="135.0" cy="84.0" r="9"/><text class="mpt" x="135.0" y="88.0" text-anchor="middle">4</text><circle class="dot" cx="84.9" cy="112.3" r="3.5"/><text  x="68.9" y="116.3">P</text><text class="tt" x="83.45" y="65.15">5</text><text class="tt" x="92.85" y="135.15">2</text><text class="ta" x="47.45" y="125.15">4</text><text class="ta" x="107.95" y="92.15">3</text><text  x="46" y="22">A</text><text  x="14" y="180">B</text><text  x="196" y="180">C</text></svg><figcaption><b>Step 4.</b> Read the far mass over the near mass: AP : PD = 5 : 2 (teal) and BP : PE = 4 : 3 (amber).</figcaption></figure></div>
+    <div class="tool" id="tool-mp">
+      <div class="tool-h"><span class="pill">Try it</span><b>Mass point explorer</b><span class="muted" style="font-size:13.5px">Set the two ratios; masses, the meeting point and every ratio update to scale.</span></div>
+      <div class="fields">
+        <label for="mp-p">BD<input id="mp-p" type="number" min="1" max="20" value="2"></label>
+        <label for="mp-q">: DC<input id="mp-q" type="number" min="1" max="20" value="3"></label>
+        <label for="mp-r">AE<input id="mp-r" type="number" min="1" max="20" value="1"></label>
+        <label for="mp-s">: EC<input id="mp-s" type="number" min="1" max="20" value="1"></label>
+      </div>
+      <div class="tool-out"><svg class="fig" id="mp-svg" viewBox="0 0 300 230" role="img" aria-label="Triangle with masses drawn to scale"></svg><div id="mp-out"></div></div>
+    </div>
+    <div class="box x"><div class="tag"><span>Exam trap · Getting the masses the wrong way round</span></div>
+      <p>Masses are the inverse of the lengths. For \(BD:DC=2:3\), \(B\) gets 3 and \(C\) gets 2, not the other way. Mass points work only for ratios along cevians meeting at one point; for a line cutting the sides, use Menelaus.</p>
+    </div>
+  </div>
+
+  <div class="sub" id="s1-9">
+    <h3><span class="sn">1.10</span>Law of cosines shortcuts</h3>
+    <div class="box f"><div class="tag"><span>Formula · Memorise these two</span></div>
+      <p>Included angle \(60^\circ\): \(a^2=b^2+c^2-bc\). Included angle \(120^\circ\): \(a^2=b^2+c^2+bc\).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 2. TRIGONOMETRY ================= -->
+<section class="chap" id="ch2">
+  <div class="chap-h"><span class="num">2</span><h2>Trigonometry</h2><span class="cc" title="Boxes memorised in this chapter"><b data-c="ch2"></b> memorised</span></div>
+  <div class="sub" id="s2-1">
+    <h3><span class="sn">2.1</span>Ratios &amp; the standard table</h3>
+    <div class="tw"><table>
+      <tr><th>θ</th><th class="c">0°</th><th class="c">30°</th><th class="c">45°</th><th class="c">60°</th><th class="c">90°</th><th class="c">15°</th><th class="c">75°</th></tr>
+      <tr><td><b>sin</b></td><td class="c">\(0\)</td><td class="c">\(\frac12\)</td><td class="c">\(\frac1{\sqrt2}\)</td><td class="c">\(\frac{\sqrt3}2\)</td><td class="c">\(1\)</td><td class="c">\(\frac{\sqrt6-\sqrt2}4\)</td><td class="c">\(\frac{\sqrt6+\sqrt2}4\)</td></tr>
+      <tr><td><b>cos</b></td><td class="c">\(1\)</td><td class="c">\(\frac{\sqrt3}2\)</td><td class="c">\(\frac1{\sqrt2}\)</td><td class="c">\(\frac12\)</td><td class="c">\(0\)</td><td class="c">\(\frac{\sqrt6+\sqrt2}4\)</td><td class="c">\(\frac{\sqrt6-\sqrt2}4\)</td></tr>
+      <tr><td><b>tan</b></td><td class="c">\(0\)</td><td class="c">\(\frac1{\sqrt3}\)</td><td class="c">\(1\)</td><td class="c">\(\sqrt3\)</td><td class="c">\(\infty\)</td><td class="c">\(2-\sqrt3\)</td><td class="c">\(2+\sqrt3\)</td></tr>
+      <tr><td><b>cosec</b></td><td class="c">\(\infty\)</td><td class="c">\(2\)</td><td class="c">\(\sqrt2\)</td><td class="c">\(\frac2{\sqrt3}\)</td><td class="c">\(1\)</td><td class="c">\(\sqrt6+\sqrt2\)</td><td class="c">\(\sqrt6-\sqrt2\)</td></tr>
+      <tr><td><b>sec</b></td><td class="c">\(1\)</td><td class="c">\(\frac2{\sqrt3}\)</td><td class="c">\(\sqrt2\)</td><td class="c">\(2\)</td><td class="c">\(\infty\)</td><td class="c">\(\sqrt6-\sqrt2\)</td><td class="c">\(\sqrt6+\sqrt2\)</td></tr>
+      <tr><td><b>cot</b></td><td class="c">\(\infty\)</td><td class="c">\(\sqrt3\)</td><td class="c">\(1\)</td><td class="c">\(\frac1{\sqrt3}\)</td><td class="c">\(0\)</td><td class="c">\(2+\sqrt3\)</td><td class="c">\(2-\sqrt3\)</td></tr>
+    </table></div>
+    <p>Also useful: \(\sin15^\circ=\cos75^\circ=\dfrac{\sqrt6-\sqrt2}{4}\), \(\sin75^\circ=\cos15^\circ=\dfrac{\sqrt6+\sqrt2}{4}\), \(\tan15^\circ=2-\sqrt3\), \(\tan75^\circ=2+\sqrt3\).</p>
+  </div>
+  <div class="sub" id="s2-2">
+    <h3><span class="sn">2.2</span>Core identities</h3>
+    <div class="box f"><div class="tag"><span>Formula · Pythagorean identities</span></div>
+      \[\sin^2\theta+\cos^2\theta=1,\qquad 1+\tan^2\theta=\sec^2\theta,\qquad 1+\cot^2\theta=\csc^2\theta\]
+    </div>
+    <ul>
+      <li>Sign rule (ASTC): Q1 All positive, Q2 Sin positive, Q3 Tan positive, Q4 Cos positive.</li>
+      <li>Complementary angles: \(\sin(90^\circ-\theta)=\cos\theta\), \(\tan(90^\circ-\theta)=\cot\theta\), and so on.</li>
+    </ul>
+  </div>
+  <div class="sub" id="s2-3">
+    <h3><span class="sn">2.3</span>Compound, multiple &amp; half angles</h3>
+    <div class="box f"><div class="tag"><span>Formula · Compound angles</span></div>
+      \[\sin(A\pm B)=\sin A\cos B\pm\cos A\sin B\qquad \cos(A\pm B)=\cos A\cos B\mp\sin A\sin B\]
+      \[\tan(A\pm B)=\frac{\tan A\pm\tan B}{1\mp\tan A\tan B}\]
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Multiple angles</span></div>
+      \[\sin2A=2\sin A\cos A=\frac{2\tan A}{1+\tan^2A}\]
+      \[\cos2A=1-2\sin^2A=2\cos^2A-1=\frac{1-\tan^2A}{1+\tan^2A}\]
+      \[\sin3A=3\sin A-4\sin^3A,\qquad \cos3A=4\cos^3A-3\cos A\]
+    </div>
+  </div>
+  <div class="sub" id="s2-4">
+    <h3><span class="sn">2.4</span>Triangle laws (used constantly in CAT &amp; IPMAT)</h3>
+    <div class="box f"><div class="tag"><span>Formula · Sine, cosine, projection</span></div>
+      \[\frac{a}{\sin A}=\frac{b}{\sin B}=\frac{c}{\sin C}=2R\qquad \cos C=\frac{a^2+b^2-c^2}{2ab}\]
+      \[a=b\cos C+c\cos B\qquad \Delta=\tfrac12 ab\sin C=2R^2\sin A\sin B\sin C\]
+    </div>
+  </div>
+  <div class="sub" id="s2-5">
+    <h3><span class="sn">2.5</span>Heights &amp; distances</h3>
+    <ul>
+      <li>The angle of elevation is measured up from the horizontal; the angle of depression, down. Between the same two points they are equal (alternate angles).</li>
+      <li>Tower of height \(h\) seen from two collinear points a horizontal distance \(d\) apart, with elevations \(\alpha\) (nearer) and \(\beta\) (farther, \(\beta\lt\alpha\)): \(h=\dfrac{d}{\cot\beta-\cot\alpha}\).</li>
+    </ul>
+    <div class="box f"><div class="tag"><span>Formula · Maximum &amp; minimum</span></div>
+      <p>\(a\sin\theta+b\cos\theta\) lies in \(\left[-\sqrt{a^2+b^2},\ \sqrt{a^2+b^2}\right]\). \(\ \sin\theta\cos\theta\le\frac12\) (as \(\sin2\theta\le1\)).</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Identities CAT / IPMAT like</span></div>
+      \[\sin C+\sin D=2\sin\tfrac{C+D}{2}\cos\tfrac{C-D}{2}\qquad \cos C+\cos D=2\cos\tfrac{C+D}{2}\cos\tfrac{C-D}{2}\]
+      \[\cos C-\cos D=-2\sin\tfrac{C+D}{2}\sin\tfrac{C-D}{2}\qquad 2\sin A\cos B=\sin(A+B)+\sin(A-B)\]
+      <p>If \(A+B+C=180^\circ\): \(\tan A+\tan B+\tan C=\tan A\tan B\tan C\).</p>
+      <p>If \(A+B=45^\circ\): \((1+\tan A)(1+\tan B)=2\).</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · More maximum &amp; minimum results</span></div>
+      <p>\(a\sin^2\theta+b\cos^2\theta\) lies between \(a\) and \(b\).</p>
+      <p>For \(a,b\gt0\): \(a\tan^2\theta+b\cot^2\theta\ge2\sqrt{ab}\) and \(a\sin^2\theta+b\csc^2\theta\ge2\sqrt{ab}\) when \(b\le a\); otherwise its minimum is \(a+b\) (at \(\sin^2\theta=1\)). Both come from AM ≥ GM.</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · What the exams actually ask</span></div>
+      <p>Trigonometry mostly appears as (i) heights and distances and (ii) a stray identity or max–min question. Nail the standard-value table, the sine and cosine rules, and \(\sqrt{a^2+b^2}\) for \(a\sin\theta+b\cos\theta\); that covers about 90% of what is asked.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3. QUADRILATERALS ================= -->
+<section class="chap" id="ch3">
+  <div class="chap-h"><span class="num">3</span><h2>Quadrilaterals &amp; Polygons</h2><span class="cc" title="Boxes memorised in this chapter"><b data-c="ch3"></b> memorised</span></div>
+  <div class="sub" id="s3-1">
+    <h3><span class="sn">3.1</span>General quadrilateral</h3>
+    <ul>
+      <li>Sum of interior angles \(=360^\circ\).</li>
+      <li>Area with diagonals \(d_1, d_2\) and angle \(\theta\) between them: \(\Delta=\tfrac12 d_1d_2\sin\theta\).</li>
+    </ul>
+    <div class="box t"><div class="tag"><span>Topper trick · Varignon</span></div>
+      <p>Joining the mid-points of the sides of any quadrilateral gives a parallelogram whose area is exactly half the original.</p>
+    </div>
+  </div>
+  <div class="sub" id="s3-2">
+    <h3><span class="sn">3.2</span>Cyclic quadrilateral (vertices on a circle)</h3>
+    <div class="box f"><div class="tag"><span>Formula · Cyclic quadrilateral</span></div>
+      <p>Opposite angles are supplementary: \(A+C=B+D=180^\circ\).</p>
+      <p><b>Ptolemy:</b> product of diagonals = sum of products of opposite sides: \(AC\cdot BD=AB\cdot CD+AD\cdot BC\).</p>
+      <p><b>Brahmagupta:</b> \(\Delta=\sqrt{(s-a)(s-b)(s-c)(s-d)}\), \(s=\dfrac{a+b+c+d}{2}\).</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Largest area</span></div>
+      <p>For fixed side lengths, the quadrilateral of maximum area is the cyclic one. Whenever a question asks for the “largest area with these four sides”, use Brahmagupta directly.</p>
+    </div>
+  </div>
+  <div class="sub" id="s3-3">
+    <h3><span class="sn">3.3</span>Parallelogram (sides a, b; diagonals d₁, d₂)</h3>
+    <ul>
+      <li>Opposite sides and angles equal; consecutive angles supplementary; diagonals bisect each other.</li>
+      <li>Area \(=\) base \(\times\) height \(=ab\sin\theta\) (\(\theta\) = included angle) \(=\tfrac12 d_1d_2\sin\varphi\) (\(\varphi\) = angle between diagonals).</li>
+      <li>Each diagonal halves it into congruent triangles; the two diagonals cut it into 4 equal-area triangles.</li>
+    </ul>
+    <div class="box f"><div class="tag"><span>Formula · Parallelogram law</span></div>
+      \[d_1^2+d_2^2=2\left(a^2+b^2\right)\]
+      <p>The sum of the squares of the diagonals equals twice the sum of the squares of the sides.</p>
+    </div>
+  </div>
+  <div class="sub" id="s3-4">
+    <h3><span class="sn">3.4</span>Rectangle, square, rhombus, kite</h3>
+    <div class="tw"><table>
+      <tr><th>Figure</th><th>Area &amp; key lengths</th><th>Diagonal properties</th></tr>
+      <tr><td><b>Rectangle</b> \((l\times b)\)</td><td>\(A=lb\); diagonal \(=\sqrt{l^2+b^2}\)</td><td>equal, bisect each other</td></tr>
+      <tr><td><b>Square</b> (side \(a\))</td><td>\(A=a^2=\tfrac12d^2\); \(d=a\sqrt2\); \(r=\frac a2\), \(R=\frac{a}{\sqrt2}\)</td><td>equal, bisect at \(90^\circ\)</td></tr>
+      <tr><td><b>Rhombus</b> (side \(a\))</td><td>\(A=\tfrac12d_1d_2=a^2\sin\theta\); \(a=\tfrac12\sqrt{d_1^2+d_2^2}\)</td><td>bisect each other at \(90^\circ\), bisect the angles</td></tr>
+      <tr><td><b>Kite</b></td><td>\(A=\tfrac12d_1d_2\)</td><td>one diagonal bisects the other at \(90^\circ\)</td></tr>
+    </table></div>
+    <div class="box x"><div class="tag"><span>Exam trap · Which figure is it?</span></div>
+      <p>A rhombus has equal sides but its diagonals are not equal (that would make it a square). A rectangle has equal diagonals but they are not perpendicular (again, that is a square). Only the square has both.</p>
+    </div>
+  </div>
+  <div class="sub" id="s3-5">
+    <h3><span class="sn">3.5</span>Trapezium (parallel sides a, b; height h)</h3>
+    <div class="box f"><div class="tag"><span>Formula · Trapezium</span></div>
+      <p>\(\Delta=\tfrac12(a+b)h\). Mid-segment (median) \(=\dfrac{a+b}{2}\), parallel to the bases.</p>
+    </div>
+    <ul>
+      <li>The diagonals create 4 triangles; the two on the parallel sides are similar with ratio \(a:b\), and the two lateral triangles have equal area. The four areas are in the ratio \(a^2:ab:b^2:ab\).</li>
+      <li>A line \(EF\) parallel to the bases cuts the legs at \(E\) and \(F\) with \(AE:ED=m:n\) (top base \(AB=a\), bottom base \(CD=b\)): \(EF=\dfrac{m\,b+n\,a}{m+n}\).</li>
+      <li>Segment through the intersection of the diagonals, parallel to the bases \(=\dfrac{2ab}{a+b}\) (harmonic mean).</li>
+      <li>Segment parallel to the bases that bisects the area \(=\sqrt{\dfrac{a^2+b^2}{2}}\) (root-mean-square).</li>
+      <li>Isosceles trapezium: legs equal, diagonals equal, and it is cyclic.</li>
+    </ul>
+  </div>
+  <div class="sub" id="s3-6">
+    <h3><span class="sn">3.6</span>Regular polygon (n sides, side a)</h3>
+    <div class="box f"><div class="tag"><span>Formula · Regular polygon</span></div>
+      \[\text{Interior angle}=\frac{(n-2)180^\circ}{n},\quad \text{exterior angle}=\frac{360^\circ}{n},\quad \textstyle\sum\text{interior}=(n-2)180^\circ\]
+      \[\text{Diagonals}=\frac{n(n-3)}{2}\]
+      \[\text{Area}=\tfrac14 na^2\cot\frac{180^\circ}{n}=\tfrac12(\text{perimeter})(\text{apothem}),\quad R=\frac{a}{2\sin(180^\circ/n)},\quad r=\frac{a}{2\tan(180^\circ/n)}\]
+    </div>
+    <div class="tw"><table>
+      <tr><th>Sides n</th><td class="c">3</td><td class="c">4</td><td class="c">5</td><td class="c">6</td><td class="c">8</td><td class="c">10</td></tr>
+      <tr><th>Interior angle</th><td class="c">60°</td><td class="c">90°</td><td class="c">108°</td><td class="c">120°</td><td class="c">135°</td><td class="c">144°</td></tr>
+    </table></div>
+    <div class="box t"><div class="tag"><span>Topper trick · The hexagon</span></div>
+      <p>A regular hexagon is six equilateral triangles of side \(a\). So Area \(=\dfrac{3\sqrt3}{2}a^2\), circumradius \(=a\), longer diagonal \(=2a\), shorter diagonal \(=a\sqrt3\), and it has 9 diagonals. This decomposition is the single biggest hexagon shortcut.</p>
+      <p>The triangle on alternate vertices is half the hexagon. The hexagon formed by joining the mid-points of the sides is \(\frac34\) of it.</p>
+      <p>Regular octagon: the square on alternate vertices has area \(1:\sqrt2\) of the octagon.</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Counting inside a convex n-gon</span></div>
+      <p>With no three diagonals concurrent, the number of interior intersection points of diagonals \(=\binom n4\). The number of triangles formed by \(n\) points with no 3 collinear \(=\binom n3\).</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Stars and staircase polygons</span></div>
+      <p>The five tip angles of a five-pointed star add to \(180^\circ\).</p>
+      <p>In a polygon whose sides are all horizontal or vertical, (corners of \(90^\circ\)) \(-\) (corners of \(270^\circ\)) \(=4\). So 25 convex corners means 21 concave ones.</p>
+    </div>
+    <div class="tool" id="tool-poly">
+      <div class="tool-h"><span class="pill">Try it</span><b>Regular polygon</b></div>
+      <div class="fields">
+        <label for="pn">Sides n<input id="pn" type="number" min="3" max="60" value="6"></label>
+        <label for="pa">Side a<input id="pa" type="number" step="any" min="0" value="4"></label>
+      </div>
+      <div class="tool-out"><svg class="fig" id="poly-svg" viewBox="0 0 300 300" role="img" aria-label="Regular polygon with its diagonals"></svg><dl class="kv" id="poly-out"></dl></div>
+    </div>
+  </div>
+  <div class="sub" id="s3-7">
+    <h3><span class="sn">3.7</span>Elite named results</h3>
+    <div class="box t"><div class="tag"><span>Topper trick · Multi-step problems in one line</span></div>
+      <p><b>British flag theorem:</b> for any point \(P\) and rectangle \(ABCD\), \(PA^2+PC^2=PB^2+PD^2\).</p>
+      <p><b>Viviani:</b> for an interior point of an equilateral triangle, the sum of distances to the sides = altitude.</p>
+      <p><b>Median triangle:</b> the three medians of a triangle can themselves form a triangle whose area is \(\frac34\) of the original.</p>
+      <p><b>Regions from lines:</b> \(n\) lines in general position split the plane into \(1+n+\binom n2\) regions.</p>
+      <p><b>Chords &amp; regions:</b> \(n\) points on a circle, all chords drawn (no 3 concurrent) \(\Rightarrow 1+\binom n2+\binom n4\) regions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 4. CIRCLES ================= -->
+<section class="chap" id="ch4">
+  <div class="chap-h"><span class="num">4</span><h2>Circles</h2><span class="cc" title="Boxes memorised in this chapter"><b data-c="ch4"></b> memorised</span></div>
+  <div class="sub" id="s4-1">
+    <h3><span class="sn">4.1</span>Basics</h3>
+    <div class="box f"><div class="tag"><span>Formula · Circle, arc, sector, segment</span></div>
+      \[\text{Circumference}=2\pi r=\pi d,\quad \text{Area}=\pi r^2,\quad \text{Annulus}=\pi\left(R^2-r^2\right)\]
+      \[\text{Arc}=\frac{\theta}{360^\circ}2\pi r=r\theta_{\text{rad}},\quad \text{Sector}=\frac{\theta}{360^\circ}\pi r^2=\tfrac12r^2\theta_{\text{rad}},\quad \text{Segment}=\tfrac12r^2(\theta-\sin\theta)_{\text{rad}}\]
+    </div>
+  </div>
+  <div class="sub" id="s4-2">
+    <h3><span class="sn">4.2</span>Chords</h3>
+    <ul>
+      <li>The perpendicular from the centre bisects a chord; conversely, the line from the centre to the mid-point of a chord is perpendicular to it.</li>
+      <li>Equal chords are equidistant from the centre, cut off equal arcs and subtend equal angles at the centre. Conversely, chords equidistant from the centre are equal.</li>
+      <li>Chord at distance \(d\) from the centre: length \(=2\sqrt{r^2-d^2}\). Chord subtending angle \(\theta\) at the centre \(=2r\sin\frac\theta2\).</li>
+    </ul>
+  </div>
+  <div class="sub" id="s4-3">
+    <h3><span class="sn">4.3</span>Angles in a circle</h3>
+    <div class="box f"><div class="tag"><span>Formula · Angle theorems</span></div>
+      <p>Angle at centre \(=2\times\) angle at circumference on the same arc.</p>
+      <p>Angles in the same segment are equal. Angle in a semicircle \(=90^\circ\) (Thales).</p>
+      <p><b>Alternate segment theorem:</b> the angle between a tangent and a chord equals the angle in the alternate segment.</p>
+    </div>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 200 175" role="img" aria-label="Angle at centre"><circle class="cr" cx="100" cy="95" r="65"/><path class="wt" d="M100,95 L110.7,104.0 A14,14 0 0 1 89.3,104.0 Z"/><path class="wa" d="M100.0,30.0 L107.6,46.3 A18,18 0 0 1 92.4,46.3 Z"/><polyline class="tl" points="50.2,136.8 100,95 149.8,136.8"/><polyline class="am" points="50.2,136.8 100.0,30.0 149.8,136.8"/><circle class="dot" cx="100" cy="95" r="2.5"/><text class="tt" x="91" y="125">2x</text><text class="ta" x="96.0" y="64.0">x</text><text x="36.2" y="148.8">A</text><text x="154.8" y="148.8">B</text><text x="96.0" y="24.0">P</text><text x="105" y="91">O</text></svg><figcaption>Angle at the centre is twice the angle at the circumference on the same arc.</figcaption></figure><figure><svg class="dg" viewBox="0 0 200 135" role="img" aria-label="Angle in a semicircle"><path class="cr" d="M25,110 A75,75 0 0 1 175,110"/><line class="ln" x1="25" y1="110" x2="175" y2="110"/><polyline class="am" points="25,110 137.5,45.0 175,110"/><polyline class="ln" points="128.0,50.5 133.5,60.0 143.0,54.5"/><circle class="dot" cx="100" cy="110" r="2.5"/><text x="21" y="126">A</text><text x="171" y="126">B</text><text x="141.5" y="39.0">C</text><text class="ta" x="107.5" y="75.0">90°</text></svg><figcaption>Any angle standing on a diameter is 90°.</figcaption></figure><figure><svg class="dg" viewBox="0 0 200 160" role="img" aria-label="Alternate segment theorem"><circle class="cr" cx="100" cy="80" r="58"/><line class="tl" x1="15" y1="138" x2="190" y2="138"/><path class="wa" d="M100,138 L110.8,121.1 A20,20 0 0 1 120.0,138.0 Z"/><path class="wa" d="M47.4,55.5 L67.4,55.5 A20,20 0 0 1 58.2,72.4 Z"/><polygon class="ln" points="100,138 152.6,55.5 47.4,55.5"/><text x="96" y="154">T</text><text x="157.6" y="55.5">A</text><text x="33.4" y="59.5">P</text><text class="ta" x="126" y="132">x</text><text class="ta" x="69.4" y="57.5">x</text></svg><figcaption>Tangent–chord angle at T equals the angle in the alternate segment at P.</figcaption></figure></div>
+  </div>
+  <div class="sub" id="s4-4">
+    <h3><span class="sn">4.4</span>Tangents &amp; power of a point</h3>
+    <ul>
+      <li>A tangent is perpendicular to the radius at the point of contact. Two tangents from an external point are equal.</li>
+      <li>Length of the tangent from an external point at distance \(d\) from the centre \(=\sqrt{d^2-r^2}\).</li>
+    </ul>
+    <div class="box f"><div class="tag"><span>Formula · Power of a point: one tool, three cases</span></div>
+      <p>Two chords meeting inside at \(P\): \(PA\cdot PB=PC\cdot PD\).</p>
+      <p>Two secants from an external \(P\): \(PA\cdot PB=PC\cdot PD\).</p>
+      <p>Tangent and secant from an external \(P\): \(PT^2=PA\cdot PB\).</p>
+    </div>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 200 170" role="img" aria-label="Two tangents from an external point"><circle class="cr" cx="70" cy="85" r="45"/><line class="tl" x1="190" y1="85" x2="86.9" y2="43.3"/><line class="tl" x1="190" y1="85" x2="86.9" y2="126.7"/><line class="ln" x1="70" y1="85" x2="86.9" y2="43.3"/><line class="ln" x1="70" y1="85" x2="86.9" y2="126.7"/><line class="ln" stroke-dasharray="3 3" x1="70" y1="85" x2="190" y2="85"/><circle class="dot" cx="70" cy="85" r="2.5"/><circle class="dot" cx="190" cy="85" r="2.5"/><text x="56" y="89">O</text><text x="178" y="103">P</text><text x="82.9" y="37.3">A</text><text x="82.9" y="142.7">B</text><text class="tt" x="134.45" y="58.150000000000006">t</text><text class="tt" x="134.45" y="121.85">t</text></svg><figcaption>PA = PB = √(d² − r²); each radius meets its tangent at 90°.</figcaption></figure><figure><svg class="dg" viewBox="0 0 200 170" role="img" aria-label="Intersecting chords"><circle class="cr" cx="100" cy="85" r="65"/><line class="tl" x1="38.9" y1="62.8" x2="164.0" y2="96.3"/><line class="am" x1="77.8" y1="23.9" x2="111.3" y2="149.0"/><circle class="dot" cx="92.0" cy="77.0" r="2.5"/><text x="24.9" y="66.8">A</text><text x="169.0" y="100.3">B</text><text x="71.8" y="17.9">C</text><text x="107.3" y="165.0">D</text><text x="98.0" y="71.0">P</text></svg><figcaption>Chords crossing inside: PA · PB = PC · PD.</figcaption></figure><figure><svg class="dg" viewBox="0 0 200 170" role="img" aria-label="Tangent and secant from an external point"><circle class="cr" cx="65" cy="85" r="48"/><line class="am" x1="192" y1="85" x2="23.4" y2="108.9"/><line class="tl" x1="192" y1="85" x2="83.1" y2="40.6"/><circle class="dot" cx="192" cy="85" r="2.5"/><text x="186" y="77">P</text><text x="113.6" y="112.4">A</text><text x="9.399999999999999" y="120.9">B</text><text x="79.1" y="34.6">T</text></svg><figcaption>Tangent and secant from P: PT² = PA · PB.</figcaption></figure></div>
+  </div>
+  <div class="sub" id="s4-5">
+    <h3><span class="sn">4.5</span>Two circles (centres d apart, radii R ≥ r)</h3>
+    <div class="tw"><table>
+      <tr><th>Relation</th><th>Configuration</th><th class="c">Common tangents</th></tr>
+      <tr><td>\(d\gt R+r\)</td><td>separate</td><td class="c">4</td></tr>
+      <tr><td>\(d=R+r\)</td><td>touch externally</td><td class="c">3</td></tr>
+      <tr><td>\(R-r\lt d\lt R+r\)</td><td>intersect at 2 points</td><td class="c">2</td></tr>
+      <tr><td>\(d=R-r\)</td><td>touch internally</td><td class="c">1</td></tr>
+      <tr><td>\(d\lt R-r\)</td><td>one inside the other</td><td class="c">0</td></tr>
+    </table></div>
+    <div class="box f"><div class="tag"><span>Formula · Common-tangent lengths</span></div>
+      <p>Direct (external) common tangent \(=\sqrt{d^2-(R-r)^2}\). Transverse (internal) common tangent \(=\sqrt{d^2-(R+r)^2}\).</p>
+      <p>Transverse common tangents cross the line of centres at the point dividing it internally in \(R:r\); direct common tangents meet it at the point dividing it externally in \(R:r\).</p>
+    </div>
+    <div class="tool" id="tool-cc">
+      <div class="tool-h"><span class="pill">Try it</span><b>Two circles</b></div>
+      <div class="fields">
+        <label for="cR">R<input id="cR" type="number" step="any" min="0" value="8"></label>
+        <label for="cr">r<input id="cr" type="number" step="any" min="0" value="3"></label>
+        <label for="cd">d<input id="cd" type="number" step="any" min="0" value="13"></label>
+      </div>
+      <div class="tool-out"><svg class="fig" id="cc-svg" viewBox="0 0 360 200" role="img" aria-label="Two circles drawn to scale"></svg><dl class="kv" id="cc-out"></dl></div>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Rolling coin</span></div>
+      <p>A coin rolling without slipping around a fixed coin of the same size makes 2 full rotations, not 1. Around a circle of radius \(R\) (coin radius \(\rho\)), it makes \(\dfrac R\rho+1\) rotations externally.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5. MENSURATION ================= -->
+<section class="chap" id="ch5">
+  <div class="chap-h"><span class="num">5</span><h2>3D Figures &amp; Mensuration</h2><span class="cc" title="Boxes memorised in this chapter"><b data-c="ch5"></b> memorised</span></div>
+  <div class="sub" id="s5-1">
+    <h3><span class="sn">5.1</span>The master table</h3>
+    <div class="tw"><table>
+      <tr><th>Solid</th><th>Volume</th><th>Curved / lateral SA</th><th>Total SA &amp; key lengths</th></tr>
+      <tr><td><b>Cube</b> (side \(a\))</td><td>\(a^3\)</td><td>\(4a^2\)</td><td>\(6a^2\); face diagonal \(a\sqrt2\), body diagonal \(a\sqrt3\)</td></tr>
+      <tr><td><b>Cuboid</b> \((l,b,h)\)</td><td>\(lbh\)</td><td>\(2h(l+b)\)</td><td>\(2(lb+bh+hl)\); diagonal \(\sqrt{l^2+b^2+h^2}\)</td></tr>
+      <tr><td><b>Cylinder</b> \((r,h)\)</td><td>\(\pi r^2h\)</td><td>\(2\pi rh\)</td><td>\(2\pi r(h+r)\)</td></tr>
+      <tr><td><b>Cone</b> \((r,h)\)</td><td>\(\tfrac13\pi r^2h\)</td><td>\(\pi rl\)</td><td>\(\pi r(l+r)\); slant \(l=\sqrt{r^2+h^2}\)</td></tr>
+      <tr><td><b>Sphere</b> \((r)\)</td><td>\(\tfrac43\pi r^3\)</td><td>\(4\pi r^2\)</td><td>\(4\pi r^2\)</td></tr>
+      <tr><td><b>Hemisphere</b> \((r)\)</td><td>\(\tfrac23\pi r^3\)</td><td>\(2\pi r^2\)</td><td>\(3\pi r^2\)</td></tr>
+      <tr><td><b>Frustum</b> \((R,r,h)\)</td><td>\(\tfrac13\pi h(R^2+r^2+Rr)\)</td><td>\(\pi(R+r)l\)</td><td>\(+\pi R^2+\pi r^2\); slant \(l=\sqrt{h^2+(R-r)^2}\)</td></tr>
+      <tr><td><b>Prism</b> (base \(A\), height \(h\))</td><td>\(Ah\)</td><td>base perimeter \(\times h\)</td><td>\(2A+\) lateral</td></tr>
+      <tr><td><b>Pyramid</b> (base \(A\), height \(h\))</td><td>\(\tfrac13Ah\)</td><td>\(\tfrac12\)(base perimeter)(slant)</td><td>base \(+\) lateral</td></tr>
+      <tr><td><b>Solid ring</b> (torus; \(R\) = centre to tube centre, \(r\) = tube radius)</td><td>\(2\pi^2Rr^2\)</td><td>\(4\pi^2Rr\)</td><td>\(4\pi^2Rr\)</td></tr>
+    </table></div>
+    <div class="tool" id="tool-sol">
+      <div class="tool-h"><span class="pill">Try it</span><b>Solid calculator</b></div>
+      <div class="fields" id="sol-fields">
+        <label for="sol-k">Solid<select id="sol-k">
+          <option value="cube">Cube</option><option value="cuboid">Cuboid</option><option value="cyl">Cylinder</option><option value="cone" selected>Cone</option><option value="sph">Sphere</option><option value="hemi">Hemisphere</option><option value="frus">Frustum</option><option value="tet">Regular tetrahedron</option>
+        </select></label>
+        <span id="sol-in" style="display:contents"></span>
+      </div>
+      <dl class="kv" id="sol-out"></dl>
+    </div>
+  </div>
+  <div class="sub" id="s5-2">
+    <h3><span class="sn">5.2</span>Cube &amp; cuboid extras</h3>
+    <ul>
+      <li>Cube: sum of all edges \(=12a\). Sphere inscribed in a cube of side \(a\) has radius \(\frac a2\); the sphere through its vertices has radius \(\frac{a\sqrt3}{2}\).</li>
+      <li>Largest cube inside a sphere of radius \(R\): body diagonal \(=2R\Rightarrow\) side \(=\dfrac{2R}{\sqrt3}\).</li>
+      <li>Largest sphere inside a prism of height \(h\): radius \(=\) the smaller of the base’s inradius and \(\frac h2\).</li>
+    </ul>
+    <div class="box t"><div class="tag"><span>Topper trick · Shortest path on a surface</span></div>
+      <p>Unfold the surface flat and join the two points with a straight line.</p>
+      <p>Cube of side \(a\), corner to opposite corner: \(\sqrt{(2a)^2+a^2}=a\sqrt5\). Cylinder, a point on the bottom rim to the opposite point on the top rim: \(\sqrt{h^2+(\pi r)^2}\).</p>
+    </div>
+  </div>
+  <div class="sub" id="s5-3">
+    <h3><span class="sn">5.3</span>Regular tetrahedron (edge a) &amp; Euler’s formula</h3>
+    <div class="box f"><div class="tag"><span>Formula · Regular tetrahedron</span></div>
+      \[V=\frac{\sqrt2}{12}a^3=\frac{a^3}{6\sqrt2},\quad SA=\sqrt3\,a^2,\quad h=\frac{a\sqrt6}{3},\quad R=\frac{a\sqrt6}{4},\quad r=\frac{a\sqrt6}{12}\ (R=3r)\]
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Euler’s polyhedron formula</span></div>
+      <p>\(V-E+F=2\). Cube: \(8-12+6=2\); tetrahedron: \(4-6+4=2\).</p>
+    </div>
+  </div>
+  <div class="sub" id="s5-5">
+    <h3><span class="sn">5.4</span>Hollow solids, rolled sheets &amp; water levels</h3>
+    <div class="box f"><div class="tag"><span>Formula · Hollow solids</span></div>
+      <p>Hollow cylinder (outer radius \(R\), inner \(r\), height \(h\)): volume \(=\pi h(R^2-r^2)\); total surface \(=2\pi h(R+r)+2\pi(R^2-r^2)\).</p>
+      <p>Spherical shell: volume \(=\tfrac43\pi(R^3-r^3)\). Hollow hemisphere (bowl): total surface \(=2\pi R^2+2\pi r^2+\pi(R^2-r^2)\).</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Rolling a sector into a cone</span></div>
+      <p>A sector of radius \(L\) and angle \(\theta\) becomes a cone with slant height \(l=L\) and base radius \(r=\dfrac{\theta}{360^\circ}L\) (arc length \(=2\pi r\)).</p>
+      <p>The cone’s curved surface equals the sector’s area: \(\pi rl\).</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Rolling a rectangle into a cylinder</span></div>
+      <p>An \(l\times b\) sheet rolled so that \(l\) becomes the circumference: \(r=\dfrac{l}{2\pi}\), \(h=b\), volume \(=\dfrac{l^2b}{4\pi}\).</p>
+      <p>Rolling it the other way gives volume \(\dfrac{b^2l}{4\pi}\). The curved surface is \(lb\) both ways, but the volumes are in the ratio \(l:b\).</p>
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Water-level rise</span></div>
+      <p>Rise in level \(=\dfrac{\text{volume of the object immersed}}{\text{base area of the vessel}}\).</p>
+      <p class="muted">A sphere of radius 5 dropped into a cylinder of radius 10: \(\frac{\frac43\pi\cdot125}{100\pi}=\frac53\).</p>
+    </div>
+    <div class="box x"><div class="tag"><span>Exam trap · Open or closed?</span></div>
+      <p>Read whether the vessel is open (no top), hollow (inner surface counts) or a solid. Most surface-area mistakes come from adding or dropping a lid or the inner surface.</p>
+    </div>
+  </div>
+  <div class="sub" id="s5-4">
+    <h3><span class="sn">5.5</span>The painted cube cut into n³ small cubes</h3>
+    <div class="box f"><div class="tag"><span>Formula · Painted-cube counts</span></div>
+      <div class="tw"><table>
+        <tr><td>3 faces painted (corners)</td><td>\(8\) (always)</td></tr>
+        <tr><td>2 faces painted (edges)</td><td>\(12(n-2)\)</td></tr>
+        <tr><td>1 face painted (face centres)</td><td>\(6(n-2)^2\)</td></tr>
+        <tr><td>0 faces painted (interior)</td><td>\((n-2)^3\)</td></tr>
+      </table></div>
+      <p>Check: \(8+12(n-2)+6(n-2)^2+(n-2)^3=n^3\).</p>
+    </div>
+    <div class="tool" id="tool-cube">
+      <div class="tool-h"><span class="pill">Try it</span><b>Painted cube</b></div>
+      <div class="fields"><label for="cn">n = <output id="cn-v">5</output><input id="cn" type="range" min="2" max="15" value="5"></label></div>
+      <div class="stack" id="cube-bar" aria-hidden="true"></div>
+      <dl class="kv" id="cube-out"></dl>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Scaling &amp; recasting</span></div>
+      <p><b>Scaling law.</b> If every length of a solid is multiplied by \(k\), surface areas multiply by \(k^2\) and volumes by \(k^3\).</p>
+      <p><b>Recasting.</b> When a solid is melted and reshaped, volume is conserved, so just equate the two volumes. These two ideas dominate CAT and IPMAT mensuration.</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Cutting a cone</span></div>
+      <p>A cut parallel to the base leaves a small cone similar to the whole: \(\dfrac hH=\dfrac rR=\dfrac lL\), so its volume is \(\left(\dfrac hH\right)^3\) of the whole.</p>
+      <p class="muted">Cut a 24 cm cone 4 cm above the base: the top is \((20/24)^3=\frac{125}{216}\), so the two parts are \(125:91\). The same idea answers water-filling questions on conical vessels.</p>
+    </div>
+    <div class="box x"><div class="tag"><span>Exam trap · Doubling the radius</span></div>
+      <p>Doubling the radius of a sphere multiplies its surface area by 4 and its volume by 8, not by 2. Always ask whether the ratio asked for is linear, area or volume.</p>
+    </div>
+  </div>
+  <div class="sub" id="s5-6">
+    <h3><span class="sn">5.6</span>Platonic solids</h3>
+    <div class="tw"><table>
+      <tr><th>Solid</th><th class="c">Faces</th><th class="c">Vertices</th><th class="c">Edges</th></tr>
+      <tr><td>Tetrahedron</td><td class="c">4</td><td class="c">4</td><td class="c">6</td></tr>
+      <tr><td>Cube (hexahedron)</td><td class="c">6</td><td class="c">8</td><td class="c">12</td></tr>
+      <tr><td>Octahedron</td><td class="c">8</td><td class="c">6</td><td class="c">12</td></tr>
+      <tr><td>Dodecahedron</td><td class="c">12</td><td class="c">20</td><td class="c">30</td></tr>
+      <tr><td>Icosahedron</td><td class="c">20</td><td class="c">12</td><td class="c">30</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ================= 6. COORDINATE GEOMETRY ================= -->
+<section class="chap" id="ch6">
+  <div class="chap-h"><span class="num">6</span><h2>Coordinate Geometry</h2><span class="cc" title="Boxes memorised in this chapter"><b data-c="ch6"></b> memorised</span></div>
+  <div class="sub" id="s6-1">
+    <h3><span class="sn">6.1</span>Points: distance, section, centres</h3>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 200 170" role="img" aria-label="Four quadrants with signs"><line class="ax" x1="10" y1="85" x2="190" y2="85"/><line class="ax" x1="100" y1="160" x2="100" y2="10"/><text class="sm" x="182" y="80">x</text><text class="sm" x="105" y="20">y</text><text class="tt" x="145" y="46.0" text-anchor="middle">I</text><text x="145" y="62.0" text-anchor="middle">(+, +)</text><text class="tt" x="55" y="46.0" text-anchor="middle">II</text><text x="55" y="62.0" text-anchor="middle">(−, +)</text><text class="tt" x="55" y="118.0" text-anchor="middle">III</text><text x="55" y="134.0" text-anchor="middle">(−, −)</text><text class="tt" x="145" y="118.0" text-anchor="middle">IV</text><text x="145" y="134.0" text-anchor="middle">(+, −)</text></svg><figcaption>Signs of (x, y) in the four quadrants.</figcaption></figure><figure><svg class="dg" viewBox="0 0 205 165" role="img" aria-label="Distance and section formula"><line class="gr" x1="18" y1="150" x2="18" y2="24"/><line class="gr" x1="36" y1="150" x2="36" y2="24"/><line class="gr" x1="54" y1="150" x2="54" y2="24"/><line class="gr" x1="72" y1="150" x2="72" y2="24"/><line class="gr" x1="90" y1="150" x2="90" y2="24"/><line class="gr" x1="108" y1="150" x2="108" y2="24"/><line class="gr" x1="126" y1="150" x2="126" y2="24"/><line class="gr" x1="144" y1="150" x2="144" y2="24"/><line class="gr" x1="162" y1="150" x2="162" y2="24"/><line class="gr" x1="180" y1="150" x2="180" y2="24"/><line class="gr" x1="198" y1="150" x2="198" y2="24"/><line class="gr" x1="18" y1="150" x2="198" y2="150"/><line class="gr" x1="18" y1="132" x2="198" y2="132"/><line class="gr" x1="18" y1="114" x2="198" y2="114"/><line class="gr" x1="18" y1="96" x2="198" y2="96"/><line class="gr" x1="18" y1="78" x2="198" y2="78"/><line class="gr" x1="18" y1="60" x2="198" y2="60"/><line class="gr" x1="18" y1="42" x2="198" y2="42"/><line class="gr" x1="18" y1="24" x2="198" y2="24"/><line class="ax" x1="18" y1="150" x2="198" y2="150"/><line class="ax" x1="18" y1="150" x2="18" y2="24"/><text class="sm" x="190" y="145">x</text><text class="sm" x="23" y="34">y</text><polyline class="am" stroke-dasharray="4 3" points="36,132 180,132 180,42"/><line class="tl" x1="36" y1="132" x2="180" y2="42"/><circle class="dot" cx="36" cy="132" r="3"/><circle class="dot" cx="180" cy="42" r="3"/><circle class="dot" cx="122.4" cy="78.0" r="3.5"/><text x="30" y="147">A(x₁, y₁)</text><text x="132" y="36">B(x₂, y₂)</text><text x="106.4" y="71.0">P</text><text class="tt" x="69.2" y="99.0">m</text><text class="tt" x="141.2" y="54.0">n</text><text class="ta" x="118.8" y="127">x₂ − x₁</text><text class="ta" x="136" y="96">y₂ − y₁</text></svg><figcaption>Distance AB is the hypotenuse of the amber right triangle. P splits AB in m : n.</figcaption></figure></div>
+    <div class="box f"><div class="tag"><span>Formula · Points</span></div>
+      \[\text{Distance}=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}\qquad \text{Mid-point}=\left(\frac{x_1+x_2}{2},\frac{y_1+y_2}{2}\right)\]
+      \[\text{Section } (m:n,\text{ internal})=\left(\frac{mx_2+nx_1}{m+n},\frac{my_2+ny_1}{m+n}\right)\qquad \text{external: }\left(\frac{mx_2-nx_1}{m-n},\frac{my_2-ny_1}{m-n}\right)\]
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Centres from coordinates</span></div>
+      \[\text{Centroid}=\left(\frac{x_1+x_2+x_3}{3},\frac{y_1+y_2+y_3}{3}\right)\qquad \text{Incentre}=\left(\frac{ax_1+bx_2+cx_3}{a+b+c},\frac{ay_1+by_2+cy_3}{a+b+c}\right)\]
+      <p>Parallelogram \(ABCD\): the diagonals share a mid-point, so \(x_1+x_3=x_2+x_4\) and \(y_1+y_3=y_2+y_4\).</p>
+    </div>
+  </div>
+  <div class="sub" id="s6-2">
+    <h3><span class="sn">6.2</span>Slope &amp; equation of a line</h3>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 200 140" role="img" aria-label="Slope and intercepts"><line class="gr" x1="6" y1="133" x2="6" y2="42"/><line class="gr" x1="19" y1="133" x2="19" y2="42"/><line class="gr" x1="32" y1="133" x2="32" y2="42"/><line class="gr" x1="45" y1="133" x2="45" y2="42"/><line class="gr" x1="58" y1="133" x2="58" y2="42"/><line class="gr" x1="71" y1="133" x2="71" y2="42"/><line class="gr" x1="84" y1="133" x2="84" y2="42"/><line class="gr" x1="97" y1="133" x2="97" y2="42"/><line class="gr" x1="110" y1="133" x2="110" y2="42"/><line class="gr" x1="123" y1="133" x2="123" y2="42"/><line class="gr" x1="136" y1="133" x2="136" y2="42"/><line class="gr" x1="149" y1="133" x2="149" y2="42"/><line class="gr" x1="162" y1="133" x2="162" y2="42"/><line class="gr" x1="175" y1="133" x2="175" y2="42"/><line class="gr" x1="188" y1="133" x2="188" y2="42"/><line class="gr" x1="6" y1="133" x2="188" y2="133"/><line class="gr" x1="6" y1="120" x2="188" y2="120"/><line class="gr" x1="6" y1="107" x2="188" y2="107"/><line class="gr" x1="6" y1="94" x2="188" y2="94"/><line class="gr" x1="6" y1="81" x2="188" y2="81"/><line class="gr" x1="6" y1="68" x2="188" y2="68"/><line class="gr" x1="6" y1="55" x2="188" y2="55"/><line class="gr" x1="6" y1="42" x2="188" y2="42"/><line class="ax" x1="6" y1="120" x2="188" y2="120"/><line class="ax" x1="110" y1="133" x2="110" y2="42"/><text class="sm" x="180" y="115">x</text><text class="sm" x="115" y="52">y</text><line class="tl" x1="6" y1="146" x2="188" y2="55"/><polyline class="am" points="136,81 162,81 162,68"/><text class="ta" x="141" y="94">run</text><text class="ta" x="166" y="78.5">rise</text><circle class="dot" cx="58" cy="120" r="3"/><circle class="dot" cx="110" cy="94" r="3"/><text x="50" y="134">a</text><text x="115" y="106">b</text><path class="am" d="M84,120 A26,26 0 0 0 81.4,108.3"/><text class="ta" x="87" y="117">θ</text></svg><figcaption>Slope m = rise ÷ run = tan θ. The line meets the axes at a and b: x/a + y/b = 1.</figcaption></figure><figure><svg class="dg" viewBox="0 0 200 160" role="img" aria-label="Parallel and perpendicular lines"><line class="ax" x1="16" y1="140" x2="198" y2="140"/><line class="ax" x1="30" y1="154" x2="30" y2="14"/><text class="sm" x="190" y="135">x</text><text class="sm" x="35" y="24">y</text><line class="tl" x1="30" y1="126" x2="198" y2="42"/><line class="tl" x1="30" y1="84" x2="170" y2="14"/><line class="am" x1="100" y1="14" x2="156" y2="126"/><polyline class="ln" points="122.0,80.0 117.7,71.2 126.4,66.8"/><text class="tt" x="174.2" y="64.4">m₁</text><text class="tt" x="44" y="56">m₂</text><text class="ta" x="77.6" y="22.4">m₃</text></svg><figcaption>Parallel: m₁ = m₂. Perpendicular: m₁ · m₃ = −1.</figcaption></figure></div>
+    <div class="box f"><div class="tag"><span>Formula · Slope</span></div>
+      \[m=\frac{y_2-y_1}{x_2-x_1}=\tan\theta\qquad \text{parallel: } m_1=m_2\qquad \text{perpendicular: } m_1m_2=-1\qquad \tan\varphi=\left|\frac{m_1-m_2}{1+m_1m_2}\right|\]
+    </div>
+    <div class="box f"><div class="tag"><span>Formula · Equation of a line</span></div>
+      <p>Point-slope: \(y-y_1=m(x-x_1)\). Two-point: \(y-y_1=\dfrac{y_2-y_1}{x_2-x_1}(x-x_1)\). Slope-intercept: \(y=mx+c\). Intercept form: \(\dfrac xa+\dfrac yb=1\).</p>
+      <p>From \(ax+by+c=0\): slope \(=-\dfrac ab\), \(x\)-intercept \(=-\dfrac ca\), \(y\)-intercept \(=-\dfrac cb\).</p>
+      <p>Parallel to the \(x\)-axis: \(y=b\) (slope 0). Parallel to the \(y\)-axis: \(x=a\) (slope undefined).</p>
+    </div>
+  </div>
+  <div class="sub" id="s6-3">
+    <h3><span class="sn">6.3</span>Distance from a line, foot &amp; reflection</h3>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 200 165" role="img" aria-label="Distance from a point to a line"><line class="gr" x1="20" y1="150" x2="20" y2="22"/><line class="gr" x1="36" y1="150" x2="36" y2="22"/><line class="gr" x1="52" y1="150" x2="52" y2="22"/><line class="gr" x1="68" y1="150" x2="68" y2="22"/><line class="gr" x1="84" y1="150" x2="84" y2="22"/><line class="gr" x1="100" y1="150" x2="100" y2="22"/><line class="gr" x1="116" y1="150" x2="116" y2="22"/><line class="gr" x1="132" y1="150" x2="132" y2="22"/><line class="gr" x1="148" y1="150" x2="148" y2="22"/><line class="gr" x1="164" y1="150" x2="164" y2="22"/><line class="gr" x1="180" y1="150" x2="180" y2="22"/><line class="gr" x1="20" y1="150" x2="180" y2="150"/><line class="gr" x1="20" y1="134" x2="180" y2="134"/><line class="gr" x1="20" y1="118" x2="180" y2="118"/><line class="gr" x1="20" y1="102" x2="180" y2="102"/><line class="gr" x1="20" y1="86" x2="180" y2="86"/><line class="gr" x1="20" y1="70" x2="180" y2="70"/><line class="gr" x1="20" y1="54" x2="180" y2="54"/><line class="gr" x1="20" y1="38" x2="180" y2="38"/><line class="gr" x1="20" y1="22" x2="180" y2="22"/><line class="ax" x1="20" y1="150" x2="180" y2="150"/><line class="ax" x1="20" y1="150" x2="20" y2="22"/><text class="sm" x="172" y="145">x</text><text class="sm" x="25" y="32">y</text><line class="tl" x1="20" y1="54" x2="128.8" y2="162.8"/><line class="am" x1="108.0" y1="70" x2="72.0" y2="106.0"/><line class="am" stroke-dasharray="4 3" x1="72.0" y1="106.0" x2="36.0" y2="142.0"/><circle class="dot" cx="108.0" cy="70" r="3"/><circle class="dot" cx="72.0" cy="106.0" r="3"/><circle class="dot2" cx="36.0" cy="142.0" r="3"/><text x="114.0" y="74">P(x₀, y₀)</text><text x="78.0" y="118.0">foot</text><text x="43.0" y="146.0">P′</text><text class="ta" x="76.0" y="86.0">d</text><text class="tt" x="39.2" y="47.6">ax + by + c = 0</text></svg><figcaption>d = |ax₀ + by₀ + c| ÷ √(a² + b²). The foot is halfway to the reflection P′.</figcaption></figure></div>
+    <div class="box f"><div class="tag"><span>Formula · Point and line</span></div>
+      \[d=\frac{|ax_0+by_0+c|}{\sqrt{a^2+b^2}}\qquad \text{from the origin: }\frac{|c|}{\sqrt{a^2+b^2}}\qquad \text{between parallels: }\frac{|c_1-c_2|}{\sqrt{a^2+b^2}}\]
+      <p>Let \(k=\dfrac{ax_0+by_0+c}{a^2+b^2}\). Foot of the perpendicular \(=(x_0-ak,\ y_0-bk)\). Reflection \(=(x_0-2ak,\ y_0-2bk)\).</p>
+      <p>The line \(ax+by+c=0\) divides the join of \(P_1, P_2\) in the ratio \(-\dfrac{ax_1+by_1+c}{ax_2+by_2+c}\) (positive means internally).</p>
+    </div>
+  </div>
+  <div class="sub" id="s6-4">
+    <h3><span class="sn">6.4</span>Area &amp; collinearity</h3>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 200 160" role="img" aria-label="Lattice triangle for Pick’s theorem"><line class="gr" x1="20" y1="140" x2="20" y2="36"/><line class="gr" x1="46" y1="140" x2="46" y2="36"/><line class="gr" x1="72" y1="140" x2="72" y2="36"/><line class="gr" x1="98" y1="140" x2="98" y2="36"/><line class="gr" x1="124" y1="140" x2="124" y2="36"/><line class="gr" x1="150" y1="140" x2="150" y2="36"/><line class="gr" x1="176" y1="140" x2="176" y2="36"/><line class="gr" x1="20" y1="140" x2="176" y2="140"/><line class="gr" x1="20" y1="114" x2="176" y2="114"/><line class="gr" x1="20" y1="88" x2="176" y2="88"/><line class="gr" x1="20" y1="62" x2="176" y2="62"/><line class="gr" x1="20" y1="36" x2="176" y2="36"/><line class="ax" x1="20" y1="140" x2="176" y2="140"/><line class="ax" x1="20" y1="140" x2="20" y2="36"/><text class="sm" x="168" y="135">x</text><text class="sm" x="25" y="46">y</text><polygon class="wt" points="20,140 124,140 20,62"/><circle class="pkb" cx="20" cy="140" r="4"/><circle class="pkb" cx="20" cy="114" r="4"/><circle class="pkb" cx="20" cy="88" r="4"/><circle class="pkb" cx="20" cy="62" r="4"/><circle class="pkb" cx="46" cy="140" r="4"/><circle class="pki" cx="46" cy="114" r="4"/><circle class="pki" cx="46" cy="88" r="4"/><circle class="pkb" cx="72" cy="140" r="4"/><circle class="pki" cx="72" cy="114" r="4"/><circle class="pkb" cx="98" cy="140" r="4"/><circle class="pkb" cx="124" cy="140" r="4"/><text class="ta" x="87.6" y="77.6">B = 8</text><text class="tt" x="87.6" y="56.8">I = 3</text></svg><figcaption>Pick: Area = I + B/2 − 1 = 3 + 4 − 1 = 6, which matches ½ × 4 × 3.</figcaption></figure></div>
+    <div class="box f"><div class="tag"><span>Formula · Area from vertices</span></div>
+      \[\Delta=\tfrac12\left|x_1(y_2-y_3)+x_2(y_3-y_1)+x_3(y_1-y_2)\right|\]
+      <p>Quadrilateral \(ABCD\) (vertices in order): \(\tfrac12\left|(x_1y_2-x_2y_1)+(x_2y_3-x_3y_2)+(x_3y_4-x_4y_3)+(x_4y_1-x_1y_4)\right|\).</p>
+      <p>Three points are collinear when this area is 0, or when slope \(AB\) = slope \(BC\).</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Shoelace &amp; Pick</span></div>
+      <p>Any polygon: write the vertices in order, repeat the first, and take \(\tfrac12\left|\sum(x_iy_{i+1}-x_{i+1}y_i)\right|\).</p>
+      <p><b>Pick’s theorem</b> for a polygon on grid points: Area \(=I+\dfrac B2-1\) (\(I\) = interior, \(B\) = boundary lattice points).</p>
+    </div>
+  </div>
+  <div class="sub" id="s6-5">
+    <h3><span class="sn">6.5</span>Circle &amp; locus</h3>
+    <div class="figs"><figure><svg class="dg" viewBox="0 0 200 165" role="img" aria-label="Circle with centre (h, k)"><line class="gr" x1="14" y1="166" x2="14" y2="6"/><line class="gr" x1="30" y1="166" x2="30" y2="6"/><line class="gr" x1="46" y1="166" x2="46" y2="6"/><line class="gr" x1="62" y1="166" x2="62" y2="6"/><line class="gr" x1="78" y1="166" x2="78" y2="6"/><line class="gr" x1="94" y1="166" x2="94" y2="6"/><line class="gr" x1="110" y1="166" x2="110" y2="6"/><line class="gr" x1="126" y1="166" x2="126" y2="6"/><line class="gr" x1="142" y1="166" x2="142" y2="6"/><line class="gr" x1="158" y1="166" x2="158" y2="6"/><line class="gr" x1="174" y1="166" x2="174" y2="6"/><line class="gr" x1="190" y1="166" x2="190" y2="6"/><line class="gr" x1="14" y1="166" x2="190" y2="166"/><line class="gr" x1="14" y1="150" x2="190" y2="150"/><line class="gr" x1="14" y1="134" x2="190" y2="134"/><line class="gr" x1="14" y1="118" x2="190" y2="118"/><line class="gr" x1="14" y1="102" x2="190" y2="102"/><line class="gr" x1="14" y1="86" x2="190" y2="86"/><line class="gr" x1="14" y1="70" x2="190" y2="70"/><line class="gr" x1="14" y1="54" x2="190" y2="54"/><line class="gr" x1="14" y1="38" x2="190" y2="38"/><line class="gr" x1="14" y1="22" x2="190" y2="22"/><line class="gr" x1="14" y1="6" x2="190" y2="6"/><line class="ax" x1="14" y1="150" x2="190" y2="150"/><line class="ax" x1="30" y1="166" x2="30" y2="6"/><text class="sm" x="182" y="145">x</text><text class="sm" x="35" y="16">y</text><circle class="cr" cx="110" cy="78.0" r="51.2" style="stroke:var(--teal);stroke-width:2"/><line class="am" x1="110" y1="78.0" x2="151.0" y2="47.3"/><circle class="dot" cx="110" cy="78.0" r="3"/><text x="84" y="94.0">(h, k)</text><text class="ta" x="129.2" y="51.6">r</text><line class="gr2" x1="110" y1="78.0" x2="110" y2="150"/><line class="gr2" x1="110" y1="78.0" x2="30" y2="78.0"/></svg><figcaption>(x − h)² + (y − k)² = r². From x² + y² + 2gx + 2fy + c = 0: centre (−g, −f), r = √(g² + f² − c).</figcaption></figure></div>
+    <div class="box f"><div class="tag"><span>Formula · Circle equations</span></div>
+      <p>\((x-h)^2+(y-k)^2=r^2\). Centre at the origin: \(x^2+y^2=r^2\).</p>
+      <p>General form \(x^2+y^2+2gx+2fy+c=0\Rightarrow\) centre \((-g,-f)\), radius \(\sqrt{g^2+f^2-c}\).</p>
+    </div>
+    <div class="box t"><div class="tag"><span>Topper trick · Locus questions</span></div>
+      <p>Call the moving point \((x,y)\), write the condition with the distance or slope formula, and simplify.</p>
+      <p>\(PA=PB\): the perpendicular bisector of \(AB\). \(\angle APB=90^\circ\): the circle on \(AB\) as diameter. Equidistant from two lines: the pair of angle bisectors. Fixed distance from a point: a circle.</p>
+    </div>
+    <div class="tool" id="tool-co">
+      <div class="tool-h"><span class="pill">Try it</span><b>Coordinate plotter</b><span class="muted" style="font-size:13.5px">Enter A, B and a point P. It draws the line AB, the point dividing AB, and P’s foot and reflection.</span></div>
+      <div class="fields">
+        <label for="co-x1">A: x₁<input id="co-x1" type="number" step="any" value="-2"></label>
+        <label for="co-y1">y₁<input id="co-y1" type="number" step="any" value="-1"></label>
+        <label for="co-x2">B: x₂<input id="co-x2" type="number" step="any" value="6"></label>
+        <label for="co-y2">y₂<input id="co-y2" type="number" step="any" value="3"></label>
+        <label for="co-m">m<input id="co-m" type="number" step="any" min="0" value="3"></label>
+        <label for="co-n">: n<input id="co-n" type="number" step="any" min="0" value="1"></label>
+        <label for="co-px">P: x₀<input id="co-px" type="number" step="any" value="1"></label>
+        <label for="co-py">y₀<input id="co-py" type="number" step="any" value="5"></label>
+      </div>
+      <div class="tool-out"><svg class="fig" id="co-svg" viewBox="0 0 300 300" role="img" aria-label="Coordinate plot"></svg><div id="co-out"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RAPID FIRE ================= -->
+<section class="chap" id="rapid">
+  <div class="chap-h"><span class="num">24</span><h2>Rapid-fire revision</h2></div>
+  <div class="sub" id="s-rapid">
+    <p class="muted">Say the answer out loud, then tap the card to check.</p>
+    <div class="row-actions"><button class="btn" id="fc-all" type="button">Reveal all</button><button class="btn" id="fc-none" type="button">Hide all</button><button class="btn" id="fc-shuf" type="button">Shuffle</button></div>
+    <div class="cards" id="cards">
+      <button class="card" type="button" aria-expanded="false"><span class="k">01</span><span class="fr">Area ratio of triangles on the same base, or with the same height?</span><span class="tap">Tap to reveal</span><span class="bk">Same base \(\Rightarrow\) area \(\propto\) height; same height \(\Rightarrow\) area \(\propto\) base.</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">02</span><span class="fr">Similar figures with length ratio k?</span><span class="tap">Tap to reveal</span><span class="bk">Lengths \(k\), areas \(k^2\), volumes \(k^3\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">03</span><span class="fr">Equilateral triangle: area, and how R and h relate to r?</span><span class="tap">Tap to reveal</span><span class="bk">\(\Delta=\frac{\sqrt3}4a^2\), \(R=2r\), \(h=3r\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">04</span><span class="fr">Right triangle: inradius, and the median to the hypotenuse?</span><span class="tap">Tap to reveal</span><span class="bk">\(r=\frac{a+b-c}2\); median to hypotenuse \(=R=\frac c2\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">05</span><span class="fr">Tangent lengths from the vertices to the incircle?</span><span class="tap">Tap to reveal</span><span class="bk">\(s-a,\ s-b,\ s-c\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">06</span><span class="fr">What do the three medians do to the area? Centroid ratio?</span><span class="tap">Tap to reveal</span><span class="bk">Six triangles of equal area; centroid divides each median \(2:1\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">07</span><span class="fr">Euler line ratio, and the R vs r inequality?</span><span class="tap">Tap to reveal</span><span class="bk">\(O,G,H\) collinear, \(OG:GH=1:2\); \(R\ge2r\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">08</span><span class="fr">∠BIC, ∠BOC and ∠BHC in terms of A?</span><span class="tap">Tap to reveal</span><span class="bk">\(\angle BIC=90^\circ+\frac A2\), \(\angle BOC=2A\), \(\angle BHC=180^\circ-A\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">09</span><span class="fr">Cyclic quadrilateral: angle property and Ptolemy?</span><span class="tap">Tap to reveal</span><span class="bk">Opposite angles sum to \(180^\circ\); \(AC\cdot BD=AB\cdot CD+AD\cdot BC\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">10</span><span class="fr">Largest-area quadrilateral with four fixed sides?</span><span class="tap">Tap to reveal</span><span class="bk">The cyclic one: Brahmagupta \(\sqrt{(s-a)(s-b)(s-c)(s-d)}\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">11</span><span class="fr">Parallelogram law?</span><span class="tap">Tap to reveal</span><span class="bk">\(d_1^2+d_2^2=2(a^2+b^2)\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">12</span><span class="fr">Trapezium: median, and the equal-area cut?</span><span class="tap">Tap to reveal</span><span class="bk">Median \(=\frac{a+b}2\); equal-area cut \(=\sqrt{\frac{a^2+b^2}2}\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">13</span><span class="fr">Area of a regular hexagon of side a?</span><span class="tap">Tap to reveal</span><span class="bk">Six equilateral triangles: \(\frac{3\sqrt3}{2}a^2\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">14</span><span class="fr">Diagonals of an n-gon, and their interior crossings?</span><span class="tap">Tap to reveal</span><span class="bk">\(\frac{n(n-3)}2\) diagonals; \(\binom n4\) crossings.</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">15</span><span class="fr">Chord at distance d; tangent from a point at distance d?</span><span class="tap">Tap to reveal</span><span class="bk">Chord \(=2\sqrt{r^2-d^2}\); tangent \(=\sqrt{d^2-r^2}\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">16</span><span class="fr">Power of a point?</span><span class="tap">Tap to reveal</span><span class="bk">\(PA\cdot PB=PC\cdot PD\) (or \(=PT^2\) with a tangent).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">17</span><span class="fr">Direct and transverse common tangents?</span><span class="tap">Tap to reveal</span><span class="bk">Direct \(\sqrt{d^2-(R-r)^2}\); transverse \(\sqrt{d^2-(R+r)^2}\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">18</span><span class="fr">Cube diagonals; painted-cube counts?</span><span class="tap">Tap to reveal</span><span class="bk">Face \(a\sqrt2\), body \(a\sqrt3\); \(8,\ 12(n-2),\ 6(n-2)^2,\ (n-2)^3\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">19</span><span class="fr">Cone volume; sphere volume &amp; SA; Euler for polyhedra?</span><span class="tap">Tap to reveal</span><span class="bk">\(\frac13\pi r^2h\); \(\frac43\pi r^3\), \(4\pi r^2\); \(V-E+F=2\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">20</span><span class="fr">British flag theorem; what is conserved in recasting?</span><span class="tap">Tap to reveal</span><span class="bk">\(PA^2+PC^2=PB^2+PD^2\); volume is conserved.</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">21</span><span class="fr">Co-interior angles between two parallel lines?</span><span class="tap">Tap to reveal</span><span class="bk">They add to \(180^\circ\); corresponding and alternate angles are equal.</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">22</span><span class="fr">Medians from B and C are perpendicular. What follows?</span><span class="tap">Tap to reveal</span><span class="bk">\(b^2+c^2=5a^2\) and \(\Delta=\frac23m_bm_c\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">23</span><span class="fr">Square inside a right triangle (legs a, b; hypotenuse c; altitude h)?</span><span class="tap">Tap to reveal</span><span class="bk">In the corner: \(\frac{ab}{a+b}\); on the hypotenuse: \(\frac{ch}{c+h}\).</span></button>
+      <button class="card" type="button" aria-expanded="false"><span class="k">24</span><span class="fr">Shortest crawl: cube corner to opposite corner; cylinder rim to opposite rim?</span><span class="tap">Tap to reveal</span><span class="bk">\(a\sqrt5\); \(\sqrt{h^2+(\pi r)^2}\).</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SELF TEST ================= -->
+<section class="chap" id="test">
+  <div class="chap-h"><span class="num">Q</span><h2>Self-test</h2></div>
+  <div class="sub" id="s-test">
+    <p class="muted">20 quick questions, one formula each. A worked solution appears once you get a question right or choose Show answer. Type a number (decimals or fractions like 65/8 are fine) and press Check or Enter.</p>
+    <div class="quiz" id="quiz">
+      <div class="q" data-ans="12"><p><span class="qn">1</span>How many triangles with integer sides have perimeter 24?</p><div class="qa"><input id="qz1" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> n = 24 is even, so 24² ÷ 48 = 12.</div></div>
+      <div class="q" data-ans="84"><p><span class="qn">2</span>Find the area of a triangle with sides 13, 14 and 15.</p><div class="qa"><input id="qz2" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> s = 21. Area = √(21 × 8 × 7 × 6) = √7056 = 84.</div></div>
+      <div class="q" data-ans="8.125"><p><span class="qn">3</span>Find the circumradius of the triangle with sides 13, 14 and 15.</p><div class="qa"><input id="qz3" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> R = abc ÷ 4Δ = (13 × 14 × 15) ÷ (4 × 84) = 2730 ÷ 336 = 8.125.</div></div>
+      <div class="q" data-ans="6"><p><span class="qn">4</span>In triangle ABC, AB = 13, BC = 14, CA = 15. The incircle touches BC at X. Find BX.</p><div class="qa"><input id="qz4" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> s = 21. BX = s − CA = 21 − 15 = 6.</div></div>
+      <div class="q" data-ans="4"><p><span class="qn">5</span>A right triangle has legs 9 and 40. Find its inradius.</p><div class="qa"><input id="qz5" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Hypotenuse = 41 (9-40-41). r = (9 + 40 − 41) ÷ 2 = 4.</div></div>
+      <div class="q" data-ans="54"><p><span class="qn">6</span>How many diagonals does a regular 12-sided polygon have?</p><div class="qa"><input id="qz6" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> n(n − 3) ÷ 2 = 12 × 9 ÷ 2 = 54.</div></div>
+      <div class="q" data-ans="70"><p><span class="qn">7</span>In a convex octagon with no three diagonals concurrent, how many points of intersection do the diagonals have inside it?</p><div class="qa"><input id="qz7" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Every 4 vertices give one crossing: ⁸C₄ = 70.</div></div>
+      <div class="q" data-ans="144"><p><span class="qn">8</span>What is each interior angle of a regular decagon, in degrees?</p><div class="qa"><input id="qz8" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> (n − 2) × 180 ÷ n = 8 × 180 ÷ 10 = 144.</div></div>
+      <div class="q" data-ans="5"><p><span class="qn">9</span>A trapezium has parallel sides 1 and 7. Find the length of the segment parallel to them that divides its area into two equal parts.</p><div class="qa"><input id="qz9" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Equal-area cut = √((1² + 7²) ÷ 2) = √25 = 5.</div></div>
+      <div class="q" data-ans="8"><p><span class="qn">10</span>A point is 10 cm from the centre of a circle of radius 6 cm. Find the length of the tangent from the point.</p><div class="qa"><input id="qz10" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Tangent = √(d² − r²) = √(100 − 36) = 8.</div></div>
+      <div class="q" data-ans="12"><p><span class="qn">11</span>Two circles of radii 8 and 3 have centres 13 apart. Find the length of a direct common tangent.</p><div class="qa"><input id="qz11" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Direct tangent = √(d² − (R − r)²) = √(169 − 25) = 12.</div></div>
+      <div class="q" data-ans="4"><p><span class="qn">12</span>A coin of radius 1 rolls without slipping once around the outside of a fixed circle of radius 3. How many rotations does it make?</p><div class="qa"><input id="qz12" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Rotations = R ÷ ρ + 1 = 3 ÷ 1 + 1 = 4.</div></div>
+      <div class="q" data-ans="48"><p><span class="qn">13</span>A painted cube is cut into 6 × 6 × 6 small cubes. How many small cubes have exactly two faces painted?</p><div class="qa"><input id="qz13" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Edge cubes = 12(n − 2) = 12 × 4 = 48.</div></div>
+      <div class="q" data-ans="8"><p><span class="qn">14</span>The radius of a sphere is doubled. By what factor does its volume increase?</p><div class="qa"><input id="qz14" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Volume ∝ r³, so 2³ = 8.</div></div>
+      <div class="q" data-ans="56"><p><span class="qn">15</span>Into how many regions do 10 lines in general position divide the plane?</p><div class="qa"><input id="qz15" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> 1 + n + ⁿC₂ = 1 + 10 + 45 = 56.</div></div>
+      <div class="q" data-ans="10"><p><span class="qn">16</span>How many obtuse-angled triangles have integer sides 8, 15 and x?</p><div class="qa"><input id="qz16" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> x longest: x² > 64 + 225 = 289, and x < 23, so x = 18 to 22 (5). 15 longest: x² < 225 − 64 = 161, and x > 7, so x = 8 to 12 (5). Total 10.</div></div>
+      <div class="q" data-ans="64"><p><span class="qn">17</span>In triangle ABC, the medians BP = 8 and CQ = 12 are perpendicular to each other. Find the area of ABC.</p><div class="qa"><input id="qz17" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Area = ⅔ × 8 × 12 = 64.</div></div>
+      <div class="q" data-ans="8.1081"><p><span class="qn">18</span>A triangle has sides 15, 20 and 25. A square has two vertices on the side of length 25 and one vertex on each of the other two sides. Find the side of the square.</p><div class="qa"><input id="qz18" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> It is a right triangle; altitude on 25 is h = 15 × 20 ÷ 25 = 12. Side = ch ÷ (c + h) = 300 ÷ 37 ≈ 8.11.</div></div>
+      <div class="q" data-ans="21"><p><span class="qn">19</span>Every side of a polygon is parallel to the x-axis or the y-axis. It has 25 corners of 90°. How many corners of 270° does it have?</p><div class="qa"><input id="qz19" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Convex − concave = 4, so concave = 25 − 4 = 21.</div></div>
+      <div class="q" data-ans="0.8"><p><span class="qn">20</span>Find the distance of the point (2, 1) from the line 4x + 3y − 7 = 0.</p><div class="qa"><input id="qz20" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> |4(2) + 3(1) − 7| ÷ √(4² + 3²) = 4 ÷ 5 = 0.8.</div></div>
+    </div>
+  </div>
+  <div class="sub" id="s-chal">
+    <h3><span class="sn">CAT / IPMAT</span>Challenge set</h3>
+    <p class="muted">10 questions at CAT / IPMAT level, each combining two or three ideas from the handbook. Give each one about 2 minutes before you look at the solution.</p>
+    <div class="quiz" id="quiz2">
+      <div class="q" data-ans="5"><p><span class="qn">C1</span>A right triangle has sides 6, 8 and 10. Find OI², where O is its circumcentre and I its incentre.</p><div class="qa"><input id="qc1" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> R = 5 and r = (6 + 8 − 10) ÷ 2 = 2. Euler: OI² = R² − 2Rr = 25 − 20 = 5.</div></div>
+      <div class="q" data-ans="1.44"><p><span class="qn">C2</span>Two circles of radii 9 and 4 touch externally. A third circle touches both of them and their direct common tangent, and sits between them. Find its radius.</p><div class="qa"><input id="qc2" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> For circles touching each other and a common line, 1/√r = 1/√9 + 1/√4 = 1/3 + 1/2 = 5/6. So √r = 6/5 and r = 36/25 = 1.44.</div></div>
+      <div class="q" data-ans="5"><p><span class="qn">C3</span>ABCD is a square of side 10. E and F are the mid-points of AB and BC. AF and DE meet at P. Find the area of triangle APE.</p><div class="qa"><input id="qc3" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Put A = (0, 0), B = (10, 0), D = (0, 10). AF: y = x/2. DE: y = 10 − 2x. They meet at P = (4, 2). Triangle APE has base AE = 5 and height 2, so its area is 5. (AF ⟂ DE here, a useful fact in its own right.)</div></div>
+      <div class="q" data-ans="30"><p><span class="qn">C4</span>In triangle ABC of area 90, points D, E, F lie on BC, CA, AB with BD : DC = CE : EA = AF : FB = 1 : 2. Find the area of triangle DEF.</p><div class="qa"><input id="qc4" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Each corner triangle shares an angle with ABC: area AFE = (1/3)(2/3) = 2/9 of ABC, and likewise BDF and CED. DEF = 1 − 3 × 2/9 = 1/3 of 90 = 30.</div></div>
+      <div class="q" data-ans="392"><p><span class="qn">C5</span>A sector of radius 21 cm and angle 120° is rolled into a cone. Find the square of the cone’s height (in cm²).</p><div class="qa"><input id="qc5" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Slant l = 21. Arc = (120/360) × 2π × 21 = 14π = 2πr, so r = 7. h² = 21² − 7² = 441 − 49 = 392.</div></div>
+      <div class="q" data-ans="36"><p><span class="qn">C6</span>A quadrilateral has sides 4, 5, 7 and 10. What is the largest area it can have?</p><div class="qa"><input id="qc6" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> The largest area comes when it is cyclic. s = 13. Brahmagupta: √(9 × 8 × 6 × 3) = √1296 = 36.</div></div>
+      <div class="q" data-ans="-5"><p><span class="qn">C7</span>The point (3, 4) is reflected in the line x + y = 1 to the point (a, b). Find a + b.</p><div class="qa"><input id="qc7" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> For x + y − 1 = 0: k = (3 + 4 − 1) ÷ 2 = 3. Reflection = (3 − 2·3, 4 − 2·3) = (−3, −2). So a + b = −5.</div></div>
+      <div class="q" data-ans="1.6667"><p><span class="qn">C8</span>A sphere of radius 5 cm is dropped into a cylindrical vessel of radius 10 cm partly filled with water. By how many cm does the water rise?</p><div class="qa"><input id="qc8" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Rise = sphere volume ÷ base area = (4/3)π(125) ÷ 100π = 5/3 ≈ 1.67 cm.</div></div>
+      <div class="q" data-ans="2700"><p><span class="qn">C9</span>From two points 60 m apart on level ground, on the same side of a tower and in line with it, the angles of elevation of its top are 30° and 60°. Find h², where h is the tower’s height in m.</p><div class="qa"><input id="qc9" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> h = 60 ÷ (cot 30° − cot 60°) = 60 ÷ (√3 − 1/√3) = 60 ÷ (2/√3) = 30√3. h² = 2700.</div></div>
+      <div class="q" data-ans="4"><p><span class="qn">C10</span>How many distinct triangles with perimeter 44 have every side a multiple of 4?</p><div class="qa"><input id="qc10" inputmode="decimal" autocomplete="off" placeholder="Answer"><button class="btn chk" type="button">Check</button><span class="res" aria-live="polite"></span></div><div class="sol" hidden><b>Solution.</b> Divide every side by 4: integer triangles with perimeter 11. Odd n, so (11 + 3)² ÷ 48 ≈ 4.08, i.e. 4: (1,5,5), (2,4,5), (3,3,5), (3,4,4).</div></div>
+    </div>
+    <div class="row-actions"><button class="btn" id="qz-reset" type="button">Clear my answers</button></div>
+  </div>
+</section>
+</main>
+</div></div>
+
+<footer class="gut"><div class="inner"><span>IMS Gandhinagar · Geometry Handbook · CAT / IPMAT</span></div></footer>
+
+<div class="scorebar gut" id="scorebar" hidden>
+  <div class="inner">
+    <span class="sc">Self-test <b id="sb-score">0</b>/20 · Challenge <b id="sb-chal">0</b>/10</span>
+    <input id="sb-name" placeholder="Your name" autocomplete="name" aria-label="Your name">
+    <a class="wa" id="sb-wa" href="https://wa.me/" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.2 1.3Z"/></svg>
+      Send score on WhatsApp</a>
+    <button class="x" id="sb-hide" type="button">Hide</button>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const fmt=(x,dp=4)=>{if(!isFinite(x))return '—';const r=Math.round(x);if(Math.abs(x-r)<1e-9)return String(r);return String(+x.toFixed(dp));};
+const num=id=>parseFloat(document.getElementById(id).value);
+const deg=r=>r*180/Math.PI;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const kv=rows=>rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
+const piStr=c=>`${fmt(c)}π ≈ ${fmt(c*Math.PI)}`;
+
+/* ---- search index (captured before maths is typeset) ---- */
+const subs=$$('.sub');
+subs.forEach(s=>{const ch=s.closest('.chap');s.dataset.q=(ch.querySelector('h2').textContent+' '+s.textContent).toLowerCase().replace(/\s+/g,' ');});
+
+/* ---- memorised ---- */
+const mem=LS.get('geo-mem2',{});
+const boxes=$$('.box');
+boxes.forEach((b,i)=>{
+  const sub=b.closest('.sub');const id=(sub?sub.id:'x')+'-'+Array.from(sub?sub.querySelectorAll('.box'):[]).indexOf(b);b.dataset.id=id;
+  const btn=document.createElement('button');btn.type='button';btn.className='memo';
+  const set=on=>{btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'✓ Memorised':'Memorised';b.classList.toggle('done',on);};
+  set(!!mem[id]);
+  btn.addEventListener('click',()=>{mem[id]=!mem[id];if(!mem[id])delete mem[id];LS.set('geo-mem2',mem);set(!!mem[id]);progress();});
+  b.querySelector('.tag').appendChild(btn);
+});
+function progress(){
+  const tot=boxes.length,done=boxes.filter(b=>mem[b.dataset.id]).length;
+  $('#ptext').textContent=`${done}/${tot} memorised`;$('#pfill').style.width=(tot?done/tot*100:0)+'%';
+  $$('[data-c]').forEach(el=>{const ch=document.getElementById(el.dataset.c);const bx=Array.from(ch.querySelectorAll('.box'));el.textContent=`${bx.filter(b=>mem[b.dataset.id]).length}/${bx.length}`;});
+}
+progress();
+
+/* ---- search + filter ---- */
+let filt='all';
+function applyView(){
+  const q=$('#q').value.trim().toLowerCase();
+  document.body.dataset.only=filt;
+  let any=false;
+  $$('.chap').forEach(ch=>{
+    let vis=0;
+    ch.querySelectorAll('.sub').forEach(s=>{
+      let ok=!q||q.split(/\s+/).every(w=>s.dataset.q.includes(w));
+      if(ok&&filt!=='all') ok=!!s.querySelector('.box.'+filt);
+      s.hidden=!ok;
+      Array.from(s.children).forEach(c=>{ if(c.tagName==='H3') return; c.hidden = filt!=='all' && !(c.classList.contains('box')&&c.classList.contains(filt)); });
+      if(ok)vis++;
+    });
+    ch.hidden=!vis; if(vis)any=true;
+  });
+  $('#nomatch').hidden=any;
+}
+$('#q').addEventListener('input',applyView);
+$$('.chip').forEach(c=>c.addEventListener('click',()=>{filt=c.dataset.f;$$('.chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));applyView();}));
+
+/* ---- rail highlight ---- */
+const railLinks=$$('#rail a');
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){railLinks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}})},{rootMargin:'-30% 0px -60% 0px'});
+$$('.chap').forEach(c=>io.observe(c));
+
+/* ---- integer triangles ---- */
+function intTri(){
+  const n=Math.round(num('int-n'));const out=$('#int-out');
+  if(!(n>=3&&n<=400)){out.innerHTML='<p class="err">Enter a perimeter between 3 and 400.</p>';return;}
+  const list=[];for(let a=1;a<=n/3;a++)for(let b=a;b<=(n-a)/2;b++){const c=n-a-b;if(c>=b&&a+b>c)list.push([a,b,c]);}
+  const f=n%2===0?Math.round(n*n/48):Math.round((n+3)*(n+3)/48);
+  out.innerHTML=`<dl class="kv">${kv([['Formula',`${n%2===0?`${n}² / 48`:`(${n}+3)² / 48`} = ${fmt(n%2===0?n*n/48:(n+3)**2/48,3)} → <b>${f}</b>`],['Listed by hand',`<b>${list.length}</b> triangle${list.length===1?'':'s'} ${list.length===f?'✓ matches':''}`]])}</dl>`+(list.length?`<div class="list-tri">${list.map(t=>`(${t.join(', ')})`).join('  ')}</div>`:'');
+}
+$('#int-n').addEventListener('input',intTri);intTri();
+
+/* ---- scale factor ---- */
+function kf(){const k=num('k-in');$('#k-out').innerHTML=isFinite(k)&&k>0?kv([['Lengths, perimeter, r, R','× '+fmt(k)],['Areas','× '+fmt(k*k)],['Volumes','× '+fmt(k**3)]]):'<dd class="err">Enter a positive ratio.</dd>';}
+$('#k-in').addEventListener('input',kf);kf();
+
+/* ---- triangle explorer ---- */
+function tri(){
+  const a=num('ta'),b=num('tb'),c=num('tc');const out=$('#tri-out'),svg=$('#tri-svg');
+  if(!(a>0&&b>0&&c>0)){out.innerHTML='<p class="err">Enter three positive side lengths.</p>';svg.innerHTML='';return;}
+  if(!(a+b>c&&b+c>a&&a+c>b)){out.innerHTML='<p class="err">These lengths break the triangle inequality: the longest side must be shorter than the other two combined.</p>';svg.innerHTML='';return;}
+  const s=(a+b+c)/2,ar=Math.sqrt(s*(s-a)*(s-b)*(s-c)),r=ar/s,R=a*b*c/(4*ar);
+  const A=deg(Math.acos((b*b+c*c-a*a)/(2*b*c))),B=deg(Math.acos((a*a+c*c-b*b)/(2*a*c))),C=180-A-B;
+  const sq=[a*a,b*b,c*c].sort((x,y)=>x-y),diff=sq[2]-sq[0]-sq[1],tol=1e-9*sq[2];
+  const kind=Math.abs(diff)<=tol?'Right-angled':diff>0?'Obtuse':'Acute';
+  const side=(a===b&&b===c)?'equilateral':(a===b||b===c||a===c)?'isosceles':'scalene';
+  const ma=.5*Math.sqrt(2*b*b+2*c*c-a*a),mb=.5*Math.sqrt(2*a*a+2*c*c-b*b),mc=.5*Math.sqrt(2*a*a+2*b*b-c*c);
+  out.innerHTML=`<p class="verdict">${kind}, ${side}</p><dl class="kv">${kv([
+    ['s',fmt(s)],['Area Δ',fmt(ar)],['Inradius r',fmt(r)],['Circumradius R',fmt(R)+(Math.abs(R-2*r)<1e-9?' = 2r':` (R/r = ${fmt(R/r,3)} ≥ 2)`)],
+    ['Angles A, B, C',`${fmt(A,2)}°, ${fmt(B,2)}°, ${fmt(C,2)}°`],['Medians mₐ, m_b, m_c',`${fmt(ma,3)}, ${fmt(mb,3)}, ${fmt(mc,3)}`],
+    ['Incircle on BC','BX = s − b = '+fmt(s-b)+', CX = s − c = '+fmt(s-c)],['Incircle on CA','CY = s − c = '+fmt(s-c)+', AY = s − a = '+fmt(s-a)],['Incircle on AB','AZ = s − a = '+fmt(s-a)+', BZ = s − b = '+fmt(s-b)]])}</dl>`;
+  // geometry
+  const Bp=[0,0],Cp=[a,0],x=(a*a+c*c-b*b)/(2*a),y=Math.sqrt(Math.max(c*c-x*x,0)),Ap=[x,y];
+  const I=[(a*Ap[0]+b*Bp[0]+c*Cp[0])/(2*s),(a*Ap[1]+b*Bp[1]+c*Cp[1])/(2*s)];
+  const O=[a/2,(x*x-a*x+y*y)/(2*y)];const G=[(Ap[0]+Bp[0]+Cp[0])/3,(Ap[1]+Bp[1]+Cp[1])/3];
+  const showIn=$('#tg-in').checked,showOut=$('#tg-out').checked,showMed=$('#tg-med').checked;
+  let xs=[0,a,x],ys=[0,y];if(showOut){xs.push(O[0]-R,O[0]+R);ys.push(O[1]-R,O[1]+R);}
+  const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+  const W=360,pad=26,k=Math.min((W-2*pad)/(maxX-minX),(300-2*pad)/(maxY-minY||1));const H=Math.max(140,(maxY-minY)*k+2*pad);
+  const P=p=>[(p[0]-minX)*k+pad,(maxY-p[1])*k+pad];
+  const [pa,pb,pc]=[P(Ap),P(Bp),P(Cp)],pg=P(G);
+  const lab=(p,t)=>{const dx=p[0]-pg[0],dy=p[1]-pg[1],L=Math.hypot(dx,dy)||1;return `<text x="${p[0]+dx/L*14}" y="${p[1]+dy/L*14+4}" text-anchor="middle">${t}</text>`;};
+  let g=`<polygon class="s-main" points="${pa} ${pb} ${pc}"/>`;
+  if(showIn){const pi=P(I);g+=`<circle class="s-in" cx="${pi[0]}" cy="${pi[1]}" r="${r*k}"/><circle class="s-dot" cx="${pi[0]}" cy="${pi[1]}" r="2.5"/>`;}
+  if(showOut){const po=P(O);g+=`<circle class="s-out" cx="${po[0]}" cy="${po[1]}" r="${R*k}"/><circle class="s-dot" cx="${po[0]}" cy="${po[1]}" r="2.5"/>`;}
+  if(showMed){const mid=(u,v)=>[(u[0]+v[0])/2,(u[1]+v[1])/2];[[pa,mid(pb,pc)],[pb,mid(pa,pc)],[pc,mid(pa,pb)]].forEach(([u,v])=>g+=`<line class="s-med" x1="${u[0]}" y1="${u[1]}" x2="${v[0]}" y2="${v[1]}"/>`);g+=`<circle class="s-dot" cx="${pg[0]}" cy="${pg[1]}" r="3"/>`;}
+  g+=lab(pa,'A')+lab(pb,'B')+lab(pc,'C');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=g;
+}
+['ta','tb','tc'].forEach(id=>$('#'+id).addEventListener('input',tri));
+['tg-in','tg-out','tg-med'].forEach(id=>$('#'+id).addEventListener('change',tri));
+$('#tpre').addEventListener('change',e=>{if(!e.target.value)return;const [a,b,c]=e.target.value.split(',');$('#ta').value=a;$('#tb').value=b;$('#tc').value=c;tri();e.target.value='';});
+tri();
+
+/* ---- regular polygon ---- */
+function poly(){
+  const n=Math.round(num('pn')),a=num('pa');const out=$('#poly-out'),svg=$('#poly-svg');
+  if(!(n>=3&&n<=60&&a>0)){out.innerHTML='<dd class="err">Use 3 to 60 sides and a positive side length.</dd>';svg.innerHTML='';return;}
+  const t=Math.PI/n,area=n*a*a/(4*Math.tan(t)),R=a/(2*Math.sin(t)),r=a/(2*Math.tan(t));
+  const C4=n*(n-1)*(n-2)*(n-3)/24,C3=n*(n-1)*(n-2)/6;
+  out.innerHTML=kv([['Interior angle',fmt((n-2)*180/n,3)+'°'],['Exterior angle',fmt(360/n,3)+'°'],['Sum of interior',fmt((n-2)*180)+'°'],['Diagonals',fmt(n*(n-3)/2)],['Diagonal crossings ⁿC₄',fmt(C4)],['Triangles from vertices ⁿC₃',fmt(C3)],['Area',fmt(area)],['Circumradius R',fmt(R)],['Inradius (apothem) r',fmt(r)]]);
+  const cx=150,cy=150,rr=125,pts=[];for(let i=0;i<n;i++){const an=-Math.PI/2+2*Math.PI*i/n;pts.push([cx+rr*Math.cos(an),cy+rr*Math.sin(an)]);}
+  let g='';if(n<=18)for(let i=0;i<n;i++)for(let j=i+2;j<n;j++){if(i===0&&j===n-1)continue;g+=`<line class="s-diag" x1="${pts[i][0]}" y1="${pts[i][1]}" x2="${pts[j][0]}" y2="${pts[j][1]}"/>`;}
+  svg.innerHTML=`<polygon class="s-main" style="fill-opacity:.55" points="${pts.map(p=>p.join(',')).join(' ')}"/>`+g;
+}
+['pn','pa'].forEach(id=>$('#'+id).addEventListener('input',poly));poly();
+
+/* ---- two circles ---- */
+function cc(){
+  let R=num('cR'),r=num('cr'),d=num('cd');const out=$('#cc-out'),svg=$('#cc-svg');
+  if(!(R>0&&r>0&&d>=0)){out.innerHTML='<dd class="err">Enter positive radii and a distance of 0 or more.</dd>';svg.innerHTML='';return;}
+  if(r>R)[R,r]=[r,R];
+  const e=1e-9;let cfg,n;
+  if(d<e&&Math.abs(R-r)<e){cfg='The same circle';n='infinitely many';}
+  else if(d>R+r+e){cfg='Separate';n=4;}else if(Math.abs(d-(R+r))<=e){cfg='Touch externally';n=3;}
+  else if(d>R-r+e){cfg='Intersect at 2 points';n=2;}else if(Math.abs(d-(R-r))<=e){cfg='Touch internally';n=1;}else{cfg='One inside the other';n=0;}
+  const dir=d>=R-r?Math.sqrt(d*d-(R-r)**2):NaN,tr=d>=R+r?Math.sqrt(d*d-(R+r)**2):NaN;
+  out.innerHTML=kv([['Configuration',`<span class="verdict">${cfg}</span>`],['Common tangents',n],['Direct tangent √(d² − (R − r)²)',isNaN(dir)?'none':fmt(dir)],['Transverse tangent √(d² − (R + r)²)',isNaN(tr)?'none':fmt(tr)]]);
+  const minX=Math.min(-R,d-r),maxX=Math.max(R,d+r),W=360,pad=14,k=Math.min((W-2*pad)/(maxX-minX),(200-2*pad)/(2*R));
+  const H=2*R*k+2*pad,X=v=>(v-minX)*k+pad,cyy=H/2;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.innerHTML=`<line class="s-axis" x1="0" y1="${cyy}" x2="${W}" y2="${cyy}"/><circle class="s-main" style="fill-opacity:.5" cx="${X(0)}" cy="${cyy}" r="${R*k}"/><circle class="s-in" style="fill:var(--amber-soft);fill-opacity:.6" cx="${X(d)}" cy="${cyy}" r="${r*k}"/><circle class="s-dot" cx="${X(0)}" cy="${cyy}" r="2.5"/><circle class="s-dot" cx="${X(d)}" cy="${cyy}" r="2.5"/>`;
+}
+['cR','cr','cd'].forEach(id=>$('#'+id).addEventListener('input',cc));cc();
+
+/* ---- solids ---- */
+const SOL={
+  cube:{f:[['a','Side a',4]],c:({a})=>[['Volume',fmt(a**3)],['Lateral SA',fmt(4*a*a)],['Total SA',fmt(6*a*a)],['Face diagonal',fmt(a*Math.SQRT2)],['Body diagonal',fmt(a*Math.sqrt(3))],['Inscribed sphere r',fmt(a/2)],['Sphere through vertices',fmt(a*Math.sqrt(3)/2)]]},
+  cuboid:{f:[['l','l',6],['b','b',4],['h','h',3]],c:({l,b,h})=>[['Volume',fmt(l*b*h)],['Lateral SA',fmt(2*h*(l+b))],['Total SA',fmt(2*(l*b+b*h+h*l))],['Diagonal',fmt(Math.sqrt(l*l+b*b+h*h))]]},
+  cyl:{f:[['r','Radius r',7],['h','Height h',10]],c:({r,h})=>[['Volume',piStr(r*r*h)],['Curved SA',piStr(2*r*h)],['Total SA',piStr(2*r*(h+r))]]},
+  cone:{f:[['r','Radius r',6],['h','Height h',8]],c:({r,h})=>{const l=Math.sqrt(r*r+h*h);return[['Slant l',fmt(l)],['Volume',piStr(r*r*h/3)],['Curved SA',piStr(r*l)],['Total SA',piStr(r*(l+r))]]}},
+  sph:{f:[['r','Radius r',3]],c:({r})=>[['Volume',piStr(4*r**3/3)],['Surface area',piStr(4*r*r)],['Largest cube inside, side',fmt(2*r/Math.sqrt(3))]]},
+  hemi:{f:[['r','Radius r',3]],c:({r})=>[['Volume',piStr(2*r**3/3)],['Curved SA',piStr(2*r*r)],['Total SA',piStr(3*r*r)]]},
+  frus:{f:[['R','R',10],['r','r',4],['h','Height h',8]],c:({R,r,h})=>{const l=Math.sqrt(h*h+(R-r)**2);return[['Slant l',fmt(l)],['Volume',piStr(h*(R*R+r*r+R*r)/3)],['Curved SA',piStr((R+r)*l)],['Total SA',piStr((R+r)*l+R*R+r*r)]]}},
+  tet:{f:[['a','Edge a',6]],c:({a})=>[['Volume',fmt(Math.SQRT2*a**3/12)],['Surface area',fmt(Math.sqrt(3)*a*a)],['Height',fmt(a*Math.sqrt(6)/3)],['Circumradius R',fmt(a*Math.sqrt(6)/4)],['Inradius r',fmt(a*Math.sqrt(6)/12)]]}
+};
+function solBuild(){const s=SOL[$('#sol-k').value];$('#sol-in').innerHTML=s.f.map(([k,l,v])=>`<label for="sol-${k}">${l}<input id="sol-${k}" type="number" step="any" min="0" value="${v}"></label>`).join('');$('#sol-in').querySelectorAll('input').forEach(i=>i.addEventListener('input',solCalc));solCalc();}
+function solCalc(){const s=SOL[$('#sol-k').value];const v={};let ok=true;s.f.forEach(([k])=>{v[k]=num('sol-'+k);if(!(v[k]>0))ok=false;});
+  if($('#sol-k').value==='frus'&&ok&&v.r>v.R){$('#sol-out').innerHTML='<dd class="err">Keep the top radius r no larger than the base radius R.</dd>';return;}
+  $('#sol-out').innerHTML=ok?kv(s.c(v)):'<dd class="err">Enter positive values.</dd>';}
+$('#sol-k').addEventListener('change',solBuild);solBuild();
+
+/* ---- painted cube ---- */
+function cube(){
+  const n=+$('#cn').value;$('#cn-v').textContent=n;const m=n-2,parts=[[8,'Corners · 3 faces','var(--red)'],[12*m,'Edges · 2 faces','var(--amber)'],[6*m*m,'Face centres · 1 face','var(--teal)'],[m**3,'Interior · 0 faces','var(--line)']];const tot=n**3;
+  $('#cube-bar').innerHTML=parts.map(([v,,c])=>`<div style="width:${v/tot*100}%;background:${c}"></div>`).join('');
+  $('#cube-out').innerHTML=kv(parts.map(([v,l,c])=>[`<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${c};margin-right:6px"></span>${l}`,fmt(v)]))+`<dt>Total</dt><dd>${parts.map(p=>p[0]).join(' + ')} = ${tot} = ${n}³ ✓</dd>`;
+}
+$('#cn').addEventListener('input',cube);cube();
+
+/* ---- mass points ---- */
+function mp(){
+  const p=Math.round(num('mp-p')),q=Math.round(num('mp-q')),r=Math.round(num('mp-r')),s=Math.round(num('mp-s'));const out=$('#mp-out'),svg=$('#mp-svg');
+  if(![p,q,r,s].every(v=>v>=1&&v<=20)){out.innerHTML='<p class="err">Use whole numbers from 1 to 20.</p>';svg.innerHTML='';return;}
+  const g=(a,b)=>b?g(b,a%b):a;
+  let mB=q*r,mC=p*r,mA=s*p;const k=g(g(mA,mB),mC);mA/=k;mB/=k;mC/=k;
+  const mD=mB+mC,mE=mA+mC,mF=mA+mB,mP=mA+mB+mC;
+  const A=[110,30],B=[30,195],C=[270,195];
+  const L=(P1,P2,t)=>[P1[0]+t*(P2[0]-P1[0]),P1[1]+t*(P2[1]-P1[1])];
+  const D=L(B,C,p/(p+q)),E=L(A,C,r/(r+s)),F=L(A,B,mB/mF),P=[(mA*A[0]+mB*B[0]+mC*C[0])/mP,(mA*A[1]+mB*B[1]+mC*C[1])/mP];
+  const mx=Math.max(mA,mB,mC,mD,mE);const rad=m=>7+9*Math.sqrt(m/mx);
+  const ball=(Q,m)=>`<circle class="mp" cx="${Q[0]}" cy="${Q[1]}" r="${rad(m)}"/><text class="mpt" x="${Q[0]}" y="${Q[1]+4}" text-anchor="middle">${m}</text>`;
+  const t=(x,y,s,c='')=>`<text ${c?`class="${c}"`:''} x="${x}" y="${y}">${s}</text>`;
+  const mid=(U,V,dx,dy)=>[(U[0]+V[0])/2+dx,(U[1]+V[1])/2+dy];
+  let g2=`<polygon class="s-main" style="fill-opacity:.35" points="${A} ${B} ${C}"/>`;
+  g2+=`<line class="cv1" x1="${A[0]}" y1="${A[1]}" x2="${D[0]}" y2="${D[1]}"/><line class="cv2" x1="${B[0]}" y1="${B[1]}" x2="${E[0]}" y2="${E[1]}"/><line class="s-med" x1="${C[0]}" y1="${C[1]}" x2="${F[0]}" y2="${F[1]}"/>`;
+  g2+=ball(A,mA)+ball(B,mB)+ball(C,mC)+ball(D,mD)+ball(E,mE);
+  g2+=`<circle class="s-dot" cx="${P[0]}" cy="${P[1]}" r="3.5"/>`+t(P[0]-17,P[1]+4,'P');
+  g2+=t(A[0]-26,A[1]+4,'A')+t(B[0]-6,B[1]+30,'B')+t(C[0]-6,C[1]+30,'C')+t(D[0]-4,D[1]+30,'D')+t(E[0]+16,E[1]-4,'E')+t(F[0]-16,F[1],'F');
+  const a=mid(A,P,7,0),b=mid(P,D,7,4),c=mid(B,P,-4,-7),d=mid(P,E,-2,-7);
+  g2+=t(a[0],a[1],fmt(mD),'tt')+t(b[0],b[1],fmt(mA),'tt')+t(c[0],c[1],fmt(mE),'ta')+t(d[0],d[1],fmt(mB),'ta');
+  svg.innerHTML=g2;
+  const R=(x,y)=>{const d=g(x,y);return `${x/d} : ${y/d}`};
+  const kv2=rows=>'<dl class="kv">'+rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')+'</dl>';
+  out.innerHTML=kv2([['Masses A, B, C',`${mA}, ${mB}, ${mC}`],['Masses D, E, P',`${mD}, ${mE}, ${mP}`],['AP : PD',`<b>${R(mD,mA)}</b>`],['BP : PE',`<b>${R(mE,mB)}</b>`],['Third cevian: AF : FB',R(mB,mA)],['CP : PF',R(mF,mC)],['Area BPC : ABC',R(mA,mP)]])+'<p class="muted" style="font-size:13.5px;margin:6px 0 0">Ball size shows the mass. Each number on a cevian is the mass at its far end.</p>';
+}
+['mp-p','mp-q','mp-r','mp-s'].forEach(id=>$('#'+id).addEventListener('input',mp));mp();
+
+/* ---- coordinate plotter ---- */
+function co(){
+  const v=id=>num(id);const x1=v('co-x1'),y1=v('co-y1'),x2=v('co-x2'),y2=v('co-y2'),m=v('co-m'),n=v('co-n'),px=v('co-px'),py=v('co-py');
+  const out=$('#co-out'),svg=$('#co-svg');
+  if(![x1,y1,x2,y2,m,n,px,py].every(isFinite)){out.innerHTML='<p class="err">Fill in every box with a number.</p>';svg.innerHTML='';return;}
+  if(x1===x2&&y1===y2){out.innerHTML='<p class="err">A and B are the same point. Move one of them to get a line.</p>';svg.innerHTML='';return;}
+  if(m<0||n<0||m+n===0){out.innerHTML='<p class="err">Use a ratio m : n with m, n ≥ 0, not both 0.</p>';svg.innerHTML='';return;}
+  const a=y2-y1,b=x1-x2,c=x2*y1-x1*y2;const d=Math.hypot(x2-x1,y2-y1);
+  const S=[(m*x2+n*x1)/(m+n),(m*y2+n*y1)/(m+n)],M=[(x1+x2)/2,(y1+y2)/2];
+  const k=(a*px+b*py+c)/(a*a+b*b),F=[px-a*k,py-b*k],R=[px-2*a*k,py-2*b*k],dist=Math.abs(a*px+b*py+c)/Math.hypot(a,b);
+  const area=Math.abs(x1*(y2-py)+x2*(py-y1)+px*(y1-y2))/2;
+  // view
+  const xs=[0,x1,x2,px,R[0],S[0]],ys=[0,y1,y2,py,R[1],S[1]];
+  let cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2,span=Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys))+3;
+  const W=300,pad=14,u=(W-2*pad)/span,X=x=>pad+(x-(cx-span/2))*u,Y=y=>W-pad-(y-(cy-span/2))*u;
+  const step=span<=24?1:span<=60?5:Math.pow(10,Math.ceil(Math.log10(span/20)));
+  let g='';const lo=cx-span/2,hi=cx+span/2,lo2=cy-span/2,hi2=cy+span/2;
+  for(let t=Math.ceil(lo/step)*step;t<=hi;t+=step)g+=`<line class="gr" x1="${X(t)}" y1="${Y(lo2)}" x2="${X(t)}" y2="${Y(hi2)}"/>`;
+  for(let t=Math.ceil(lo2/step)*step;t<=hi2;t+=step)g+=`<line class="gr" x1="${X(lo)}" y1="${Y(t)}" x2="${X(hi)}" y2="${Y(t)}"/>`;
+  g+=`<line class="ax" x1="${X(lo)}" y1="${Y(0)}" x2="${X(hi)}" y2="${Y(0)}"/><line class="ax" x1="${X(0)}" y1="${Y(lo2)}" x2="${X(0)}" y2="${Y(hi2)}"/>`;
+  // line AB extended
+  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),T=span*2;
+  g+=`<line class="lnA" x1="${X(x1-dx/L*T)}" y1="${Y(y1-dy/L*T)}" x2="${X(x1+dx/L*T)}" y2="${Y(y1+dy/L*T)}"/>`;
+  g+=`<line class="pr" x1="${X(px)}" y1="${Y(py)}" x2="${X(F[0])}" y2="${Y(F[1])}"/><line class="pr2" x1="${X(F[0])}" y1="${Y(F[1])}" x2="${X(R[0])}" y2="${Y(R[1])}"/>`;
+  const pt=(P,lbl,cls='dot',dx=6,dy=-6)=>`<circle class="${cls}" cx="${X(P[0])}" cy="${Y(P[1])}" r="3.5"/><text x="${X(P[0])+dx}" y="${Y(P[1])+dy}">${lbl}</text>`;
+  g+=pt([x1,y1],'A')+pt([x2,y2],'B')+pt(S,'S','dot',6,14)+pt([px,py],'P')+pt(F,'F','dot',6,14)+pt(R,'P′','dot2');
+  svg.setAttribute('viewBox',`0 0 ${W} ${W}`);svg.innerHTML=`<defs><clipPath id="co-clip"><rect x="0" y="0" width="${W}" height="${W}"/></clipPath></defs><g clip-path="url(#co-clip)">${g}</g>`;
+  const f=x=>fmt(x,3),pr=P=>`(${f(P[0])}, ${f(P[1])})`;
+  const gg=(p,q)=>q?gg(q,p%q):Math.abs(p);let A2=a,B2=b,C2=c;
+  if([a,b,c].every(Number.isInteger)){let dd=gg(gg(a,b),c)||1;if(A2<0||(A2===0&&B2<0))dd=-dd;A2/=dd;B2/=dd;C2/=dd;}
+  const term=(co,vr,first)=>{if(Math.abs(co)<1e-12)return '';const sgn=co<0?'−':'+';const mag=Math.abs(co);const s=(Math.abs(mag-1)<1e-12&&vr?'':f(mag))+vr;return first?(co<0?'−':'')+s:` ${sgn} ${s}`;};
+  let eq=term(A2,'x',true);eq+=term(B2,'y',eq==='');eq+=term(C2,'',eq==='');eq+=' = 0';
+  const slope=b===0?'undefined (vertical line)':f(-a/b),ang=b===0?'90°':f((Math.atan2(-a,b)*180/Math.PI+180)%180)+'°';
+  const xi=a===0?'none':f(-c/a),yi=b===0?'none':f(-c/b);
+  out.innerHTML='<dl class="kv">'+[['Distance AB',f(d)],['Mid-point',pr(M)],[`S divides AB in ${f(m)} : ${f(n)}`,pr(S)],['Line AB',eq],['Slope; angle with x-axis',slope+'; '+ang],['x- and y-intercepts',xi+', '+yi],['Distance from P to AB',f(dist)],['Foot F',pr(F)],['Reflection P′',pr(R)],['Area of triangle ABP',area<1e-9?'0, so A, B and P are collinear':f(area)]].map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')+'</dl>';
+}
+['co-x1','co-y1','co-x2','co-y2','co-m','co-n','co-px','co-py'].forEach(id=>$('#'+id).addEventListener('input',co));co();
+
+/* ---- flashcards ---- */
+const cardsEl=$('#cards');
+cardsEl.addEventListener('click',e=>{const c=e.target.closest('.card');if(c)c.setAttribute('aria-expanded',c.getAttribute('aria-expanded')==='true'?'false':'true');});
+$('#fc-all').onclick=()=>$$('.card').forEach(c=>c.setAttribute('aria-expanded','true'));
+$('#fc-none').onclick=()=>$$('.card').forEach(c=>c.setAttribute('aria-expanded','false'));
+$('#fc-shuf').onclick=()=>{const cs=$$('.card');for(let i=cs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cs[i],cs[j]]=[cs[j],cs[i]];}cs.forEach(c=>{c.setAttribute('aria-expanded','false');cardsEl.appendChild(c);});};
+
+/* ---- self-test ---- */
+const qs=$$('.q');const q1=$$('#quiz .q'),q2=$$('#quiz2 .q');const saved=LS.get('geo-quiz2',{});let barHidden=false;
+const parse=v=>{v=v.trim().replace(/,/g,'').replace(/[−–]/g,'-');if(/^-?\d*\.?\d+\s*\/\s*-?\d*\.?\d+$/.test(v)){const [p,q]=v.split('/').map(Number);return q?p/q:NaN;}return v===''?NaN:Number(v);};
+function grade(q,fromUser){
+  const inp=q.querySelector('input'),res=q.querySelector('.res'),ans=+q.dataset.ans,val=parse(inp.value),sol=q.querySelector('.sol');
+  q.querySelectorAll('.reveal').forEach(x=>x.remove());
+  if(isNaN(val)){res.textContent=fromUser?'Type a number first.':'';res.className='res no';q.classList.remove('ok','no');if(sol)sol.hidden=q.dataset.shown!=='1';return;}
+  const ok=Math.abs(val-ans)<0.01;q.dataset.ok=ok&&q.dataset.shown!=='1'?'1':'0';
+  q.classList.toggle('ok',ok);q.classList.toggle('no',!ok);
+  res.textContent=ok?(q.dataset.shown==='1'?'Correct (answer was shown)':'Correct'):'Not quite. Try again.';res.className='res '+(ok?'ok':'no');
+  if(sol)sol.hidden=!(ok||q.dataset.shown==='1');
+  if(!ok&&q.dataset.shown!=='1'){const b=document.createElement('button');b.type='button';b.className='reveal';b.textContent='Show answer';b.onclick=()=>{q.dataset.shown='1';res.textContent='Answer: '+fmt(ans,4);res.className='res';b.remove();if(sol)sol.hidden=false;save();score();};q.querySelector('.qa').appendChild(b);}
+  save();score();
+}
+function save(){const o={};qs.forEach((q,i)=>{o[i]={v:q.querySelector('input').value,s:q.dataset.shown||''};});LS.set('geo-quiz2',o);}
+function score(){
+  const s1=q1.filter(q=>q.dataset.ok==='1').length,s2=q2.filter(q=>q.dataset.ok==='1').length;const attempted=qs.some(q=>q.classList.contains('ok')||q.classList.contains('no')||q.dataset.shown==='1');
+  $('#sb-score').textContent=s1;$('#sb-chal').textContent=s2;$('#railScore').textContent=attempted?(s1+s2)+'/'+qs.length:'';
+  $('#scorebar').hidden=!attempted||barHidden;updateWA();
+}
+function updateWA(){const name=$('#sb-name').value.trim();const s1=$('#sb-score').textContent,s2=$('#sb-chal').textContent;const txt=`IMS Gandhinagar · CAT / IPMAT Geometry Handbook\n${name?'Name: '+name+'\n':''}Self-test: ${s1}/${q1.length}\nChallenge set: ${s2}/${q2.length}`;$('#sb-wa').href='https://wa.me/?text='+encodeURIComponent(txt);}
+qs.forEach((q,i)=>{
+  const inp=q.querySelector('input');
+  q.querySelector('.chk').addEventListener('click',()=>grade(q,true));
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')grade(q,true);});
+  if(saved[i]){inp.value=saved[i].v||'';if(saved[i].s)q.dataset.shown='1';if(inp.value)grade(q,false);else if(saved[i].s){const s=q.querySelector('.sol');if(s)s.hidden=false;q.querySelector('.res').textContent='Answer: '+fmt(+q.dataset.ans,4);}}
+});
+$('#sb-name').value=LS.get('geo-name','');
+$('#sb-name').addEventListener('input',e=>{LS.set('geo-name',e.target.value);updateWA();});
+$('#sb-hide').onclick=()=>{barHidden=true;$('#scorebar').hidden=true;};
+$('#qz-reset').onclick=()=>{qs.forEach(q=>{q.querySelector('input').value='';q.className='q';delete q.dataset.ok;delete q.dataset.shown;q.querySelector('.res').textContent='';q.querySelectorAll('.reveal').forEach(x=>x.remove());const s=q.querySelector('.sol');if(s)s.hidden=true;});save();score();};
+score();
+})();
+</script>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},options:{enableMenu:false}};</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+
+</body>
+</html>
